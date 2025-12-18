@@ -9,14 +9,14 @@
         "options": {
           "command": "webpack-cli build",
           "args": [
-            "--node-env=production"
+            "--node-env=prod"
           ],
           "cwd": "apps/backend"
         },
         "configurations": {
-          "development": {
+          "dev": {
             "args": [
-              "--node-env=development"
+              "--node-env=dev"
             ]
           }
         }
@@ -56,22 +56,23 @@
         "executor": "nx:noop"
       },
       "serve": {
-        "continuous": true,
-        "executor": "@nx/js:node",
-        "defaultConfiguration": "development",
+        "executor": "nx:run-commands",
+        "defaultConfiguration": "dev",
         "dependsOn": [
           "build"
         ],
         "options": {
-          "buildTarget": "backend:build",
-          "runBuildTargetDependencies": false
+          "command": "node dist/main.js",
+          "cwd": "apps/backend"
         },
         "configurations": {
-          "development": {
-            "buildTarget": "backend:build:development"
+          "dev": {
+            "command": "node dist/main.js",
+            "cwd": "apps/backend"
           },
-          "production": {
-            "buildTarget": "backend:build:production"
+          "prod": {
+            "command": "node dist/main.js",
+            "cwd": "apps/backend"
           }
         }
       },
