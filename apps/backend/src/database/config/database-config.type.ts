@@ -6,4 +6,5 @@ export type DatabaseConfig = {
   password: string;
   database: string;
   logging: boolean;
+  synchronize: boolean;
 };
