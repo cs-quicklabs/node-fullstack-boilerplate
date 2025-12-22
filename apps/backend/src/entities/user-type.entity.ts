@@ -1,4 +1,4 @@
-import { Column, DataType, Table } from "sequelize-typescript";
+import { Column, DataType, Index, Table } from "sequelize-typescript";
 import { BaseEntity } from "./base.entity";
 
 @Table({
@@ -11,6 +11,7 @@ export class UserTypeEntity extends BaseEntity {
   })
   declare name: string;
 
+  @Index({ name: 'IDX_USER_TYPE_CODE', unique: true })
   @Column({
     type: DataType.STRING,
     allowNull: false,

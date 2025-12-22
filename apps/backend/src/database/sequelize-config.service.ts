@@ -16,8 +16,6 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
       infer: true,
     });
 
-    console.log('databaseConfig', databaseConfig);
-
     return {
       dialect: databaseConfig.dialect,
       host: databaseConfig.host,
@@ -26,7 +24,10 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
       password: databaseConfig.password,
       database: databaseConfig.database,
       logging: databaseConfig.logging ?? false,
-      synchronize: databaseConfig.synchronize ?? false,
+      sync: {
+        alter: databaseConfig.synchronize ?? false,
+        force: databaseConfig.synchronize ?? false,
+      },
       autoLoadModels: true,
       models: [...entities],
       define: {

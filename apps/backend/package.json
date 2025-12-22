@@ -58,19 +58,19 @@
       "serve": {
         "executor": "nx:run-commands",
         "defaultConfiguration": "dev",
-        "dependsOn": [
-          "build"
-        ],
         "options": {
           "command": "node dist/main.js",
           "cwd": "apps/backend"
         },
         "configurations": {
           "dev": {
-            "command": "node dist/main.js",
+            "command": "nest start --watch",
             "cwd": "apps/backend"
           },
           "prod": {
+            "dependsOn": [
+              "build"
+            ],
             "command": "node dist/main.js",
             "cwd": "apps/backend"
           }
@@ -103,9 +103,12 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@nestjs/cli": "^11.0.14",
     "@nestjs/testing": "^11.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/morgan": "^1.9.10",
-    "@types/sequelize": "^4.28.20"
+    "@types/sequelize": "^4.28.20",
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.11"
   }
 }

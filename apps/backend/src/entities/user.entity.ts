@@ -1,4 +1,4 @@
-import { BelongsTo, Column, DataType, ForeignKey, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Index, IsUUID, Sequelize, Table } from "sequelize-typescript";
 import { BaseEntity } from "./base.entity";
 import { UserTypeEntity } from "./user-type.entity";
 import { OrganizationEntity } from "./organization.entity";
@@ -7,6 +7,14 @@ import { OrganizationEntity } from "./organization.entity";
   tableName: 'user',
 })
 export class UserEntity extends BaseEntity {
+  @IsUUID(4)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+    defaultValue: Sequelize.literal('gen_random_uuid()'),
+  })
+  declare uuid: string;
+
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -27,6 +35,7 @@ export class UserEntity extends BaseEntity {
     return `${this.first_name} ${this.last_name}`.trim();
   }
 
+  @Index({ name: 'IDX_USER_EMAIL', unique: true })
   @Column({
     type: DataType.STRING,
     allowNull: false,

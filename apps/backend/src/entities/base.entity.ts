@@ -1,5 +1,6 @@
 import { instanceToPlain } from 'class-transformer';
-import { Column, DataType, Model } from 'sequelize-typescript';
+import { Column, CreatedAt, DataType, Model, UpdatedAt } from 'sequelize-typescript';
+import { Sequelize } from 'sequelize';
 
 // these columns will be presented in all the entity
 // this will be extended.
@@ -11,19 +12,23 @@ export abstract class BaseEntity extends Model<Record<string, unknown>> {
   })
   declare id: number;
 
-  @Column({
+  @CreatedAt
+  @Column({ 
+    field: 'created_at', 
     type: DataType.DATE,
-    allowNull: false,
-    defaultValue: DataType.NOW,
+    allowNull: false, 
+    defaultValue: Sequelize.literal('NOW()')
   })
-  declare created_at: Date;
+  declare createdAt: Date;
 
-  @Column({
+  @UpdatedAt
+  @Column({ 
+    field: 'updated_at', 
     type: DataType.DATE,
-    allowNull: false,
-    defaultValue: DataType.NOW,
+    allowNull: false, 
+    defaultValue: Sequelize.literal('NOW()')
   })
-  declare updated_at: Date;
+  declare updatedAt: Date;
 
   override toJSON() {
     return instanceToPlain(this);
