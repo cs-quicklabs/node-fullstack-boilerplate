@@ -35,7 +35,7 @@ export class UserEntity extends BaseEntity {
     return `${this.first_name} ${this.last_name}`.trim();
   }
 
-  @Index({ name: 'IDX_USER_EMAIL', unique: true })
+  @Index({ name: 'IDX_USER_EMAIL', unique: true, where: { deleted_at: null } })
   @Column({
     type: DataType.STRING,
     allowNull: false,

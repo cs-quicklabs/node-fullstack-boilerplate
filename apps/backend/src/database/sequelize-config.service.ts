@@ -30,9 +30,6 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
       },
       autoLoadModels: true,
       models: [...entities],
-      define: {
-        timestamps: false, // Disable Sequelize's default createdAt/updatedAt since we use created_at/updated_at
-      },
       pool: {
         max: 5,
         min: 0,
