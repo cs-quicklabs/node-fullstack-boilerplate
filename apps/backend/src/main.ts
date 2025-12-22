@@ -10,10 +10,11 @@ import morgan from 'morgan';
 import { useContainer } from 'class-validator';
 import * as cookieParser from 'cookie-parser';
 import { Request } from 'express';
-import { AppModule } from './app/app.module';
+import { AppModule } from './app.module';
 import { setupSwagger } from './swagger';
-import { validationOptions } from './app/commons/utils';
-import { ExceptionResponseFilter } from './app/commons/filters';
+import { validationOptions } from './commons/utils';
+import { ExceptionResponseFilter } from './commons/filters';
+import { AllConfigType } from './config/config.type';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -64,10 +65,21 @@ async function bootstrap() {
   // adding cookie parser
   app.use(cookieParser.default());
 
-  const configService = app.get(ConfigService);
+  const configService = app.get(ConfigService<AllConfigType>);
+
+  const frontendURL = configService.getOrThrow('app.frontendDomain', {
+    infer: true,
+  });
+
+  // enabling CORS for frontend consumption
+  app.enableCors({
+    origin: [frontendURL],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    credentials: true,
+  });
 
   // global prefix
-  const globalPrefix = configService.get('app.globalPrefix') || 'api';
+  const globalPrefix = configService.getOrThrow('app.apiPrefix', { infer: true }) || 'api';
   app.setGlobalPrefix(globalPrefix);
 
   // enanbling API versioning
@@ -85,7 +97,7 @@ async function bootstrap() {
   app.useGlobalFilters(new ExceptionResponseFilter());
 
   // starting the server
-  const port = configService.get('app.port') || 3000;
+  const port = configService.getOrThrow('app.port', { infer: true });
 
   await app.listen(port);
   Logger.log(

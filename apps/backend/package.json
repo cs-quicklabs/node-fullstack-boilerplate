@@ -88,19 +88,24 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/sequelize": "^11.0.1",
     "@nestjs/swagger": "^11.2.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "cookie-parser": "^1.4.7",
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
+    "pg": "^8.16.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
+    "sequelize": "^6.37.7",
+    "sequelize-typescript": "^2.1.6",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@nestjs/testing": "^11.0.0",
     "@types/cookie-parser": "^1.4.10",
-    "@types/morgan": "^1.9.10"
+    "@types/morgan": "^1.9.10",
+    "@types/sequelize": "^4.28.20"
   }
 }
