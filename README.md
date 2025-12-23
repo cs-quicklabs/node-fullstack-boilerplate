@@ -23,17 +23,31 @@ A production-ready monorepo boilerplate with NestJS backend, Next.js frontend, a
 - 📚 **Swagger/OpenAPI** documentation
 - ✅ **Validation** with class-validator
 - 🔄 **Soft Delete** support
+- 🗃️ **Database Migrations** with Sequelize
 
 ### Frontend (Next.js)
 
 - ⚡ **Next.js 16** with App Router
-- 🎨 **SCSS** support
+- 🎨 **Tailwind CSS** for styling
+- 📦 **SCSS** support
+- 🔄 **TanStack Query** for server state
+- 🗃️ **Zustand** for client state
+- ✅ **Zod** for schema validation
 - 🧪 **Jest** testing
+- 📱 **Responsive** design ready
 
 ### Packages (Reusable)
 
 - 📧 `@boilerplate/mailer` - Email sending with Nodemailer
 - 📱 `@boilerplate/sms` - SMS sending with Twilio
+
+### Developer Experience
+
+- 🎨 **Prettier** for code formatting
+- 📝 **EditorConfig** for consistent coding styles
+- 🔍 **ESLint** for code quality
+- 🧪 **Jest** for testing
+- 🎭 **Playwright** for E2E testing
 
 ---
 
@@ -52,7 +66,10 @@ A production-ready monorepo boilerplate with NestJS backend, Next.js frontend, a
 │
 ├── nx.json                   # Nx configuration
 ├── package.json              # Root dependencies
-└── tsconfig.base.json        # Base TypeScript config
+├── tsconfig.base.json        # Base TypeScript config
+├── .prettierrc               # Prettier configuration
+├── .editorconfig             # EditorConfig settings
+└── .vscode/                  # VS Code settings
 ```
 
 ---
@@ -75,12 +92,20 @@ cd boilerplate-nest-next
 # Install dependencies
 npm install
 
-# Setup environment
-cp apps/backend/env-example.txt apps/backend/.env
-# Edit .env with your configuration
+# Setup backend environment
+cp apps/backend/.env.example apps/backend/.env
+# Edit apps/backend/.env with your configuration
+
+# Setup frontend environment (if needed)
+# Create apps/frontend/.env.local with your variables
 
 # Create database
 createdb boilerplate_db
+
+# Run migrations
+cd apps/backend
+npm run migration:run
+npm run seed:run
 ```
 
 ### Running the Applications
@@ -156,6 +181,40 @@ npx nx build frontend          # Build frontend
 
 # Run all builds
 npx nx run-many --target=build --all
+```
+
+### Database Migrations (Backend)
+
+```bash
+cd apps/backend
+
+# Run pending migrations
+npm run migration:run
+
+# Rollback last migration
+npm run migration:rollback
+
+# Check migration status
+npm run migration:status
+
+# Run seeders
+npm run seed:run
+
+# Fresh migration (⚠️ drops all tables)
+npm run migration:fresh
+```
+
+### Code Formatting
+
+```bash
+# Format all files
+npm run format
+
+# Check formatting (CI/CD)
+npm run format:check
+
+# Fix formatting issues
+npm run format:fix
 ```
 
 ### Testing
@@ -263,8 +322,10 @@ TWILIO_PREVIEW_MODE=true
 | Topic          | Location                                                                             |
 | -------------- | ------------------------------------------------------------------------------------ |
 | Backend        | [apps/backend/README.md](./apps/backend/README.md)                                   |
+| Frontend       | [apps/frontend/README.md](./apps/frontend/README.md)                                 |
 | Auth Module    | [apps/backend/src/modules/auth/README.md](./apps/backend/src/modules/auth/README.md) |
 | Base CRUD      | [apps/backend/src/commons/base/README.md](./apps/backend/src/commons/base/README.md) |
+| Database       | [apps/backend/src/database/README.md](./apps/backend/src/database/README.md)         |
 | Mailer Package | [packages/mailer/README.md](./packages/mailer/README.md)                             |
 | SMS Package    | [packages/sms/README.md](./packages/sms/README.md)                                   |
 
@@ -284,11 +345,17 @@ TWILIO_PREVIEW_MODE=true
 ### Frontend
 
 - [Next.js](https://nextjs.org/) - React framework
-- [SCSS](https://sass-lang.com/) - Styling
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
+- [TanStack Query](https://tanstack.com/query) - Server state management
+- [Zustand](https://zustand-demo.pmnd.rs/) - Client state management
+- [Zod](https://zod.dev/) - Schema validation
+- [SCSS](https://sass-lang.com/) - CSS preprocessor
 
 ### Tooling
 
 - [Nx](https://nx.dev/) - Monorepo management
+- [Prettier](https://prettier.io/) - Code formatter
+- [EditorConfig](https://editorconfig.org/) - Consistent coding styles
 - [Jest](https://jestjs.io/) - Testing
 - [Playwright](https://playwright.dev/) - E2E testing
 - [ESLint](https://eslint.org/) - Linting
@@ -322,7 +389,30 @@ MAIL_PREVIEW=true
 TWILIO_PREVIEW_MODE=true
 ```
 
-See [env-example.txt](./apps/backend/env-example.txt) for full configuration.
+### Frontend
+
+```env
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+```
+
+---
+
+## 🎨 Code Style
+
+This project uses:
+
+- **Prettier** for automatic code formatting
+- **EditorConfig** for consistent editor settings
+- **ESLint** for code quality
+
+Format your code before committing:
+
+```bash
+npm run format
+```
+
+VS Code users: Format on save is enabled automatically.
 
 ---
 
@@ -331,7 +421,7 @@ See [env-example.txt](./apps/backend/env-example.txt) for full configuration.
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Run tests and linting
+4. Run tests, linting, and formatting
 5. Submit a pull request
 
 ---
@@ -348,3 +438,5 @@ MIT
 - [NestJS Documentation](https://docs.nestjs.com/)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Sequelize Documentation](https://sequelize.org/docs/v6/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [TanStack Query Documentation](https://tanstack.com/query/latest)

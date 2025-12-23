@@ -6,9 +6,8 @@ A production-ready NestJS backend boilerplate with authentication, authorization
 
 - **Authentication & Authorization**
   - JWT-based authentication with access and refresh tokens
-  - Session management stored in database
+  - Session management stored in database (hash-based)
   - Role-based access control (RBAC)
-  - Email verification with link and 6-digit code
   - Password reset flow
 - **Multi-Tenant Architecture**
 
@@ -21,7 +20,8 @@ A production-ready NestJS backend boilerplate with authentication, authorization
   - PostgreSQL with Sequelize ORM
   - Soft delete support
   - Base entity with timestamps
-  - Migrations support
+  - Database migrations with Sequelize
+  - Seeders for initial data
 
 - **API Features**
 
@@ -32,10 +32,17 @@ A production-ready NestJS backend boilerplate with authentication, authorization
   - Global exception handling
 
 - **Email & SMS**
+
   - Email sending via `@boilerplate/mailer` package
   - SMS sending via `@boilerplate/sms` package
   - Dev preview mode (opens in browser)
   - Handlebars email templates
+
+- **SOLID Principles**
+  - Single Responsibility Principle (SRP)
+  - Dependency Inversion Principle (DIP)
+  - Service-based architecture
+  - Reusable base classes
 
 ---
 
@@ -55,9 +62,14 @@ apps/backend/
 │   │   └── utils/              # Utility functions
 │   ├── config/                 # Configuration files
 │   ├── database/               # Database config & migrations
+│   │   ├── migrations/         # Database migrations
+│   │   └── seeders/           # Data seeders
 │   ├── entities/               # Sequelize entities/models
 │   ├── modules/                # Feature modules
 │   │   ├── auth/               # Authentication module
+│   │   │   ├── services/       # PasswordService, TokenService, SessionService
+│   │   │   ├── guards/         # JwtAuthGuard, RolesGuard, OrganizationGuard
+│   │   │   └── decorators/     # @CurrentUser, @Roles, @Public
 │   │   ├── user/               # User management module
 │   │   ├── organization/       # Organization module
 │   │   └── user-type/          # User types/roles module
@@ -65,7 +77,7 @@ apps/backend/
 │   ├── main.ts                 # Application entry point
 │   └── swagger.ts              # Swagger configuration
 ├── templates/                  # Email templates (Handlebars)
-├── env-example.txt             # Environment variables example
+├── .sequelizerc                # Sequelize CLI configuration
 └── package.json
 ```
 
@@ -81,13 +93,7 @@ apps/backend/
 
 ### 2. Environment Configuration
 
-Copy the environment example and configure:
-
-```bash
-cp env-example.txt .env
-```
-
-Edit `.env` with your configuration:
+Create `.env` file in `apps/backend/`:
 
 ```env
 # Application
@@ -96,20 +102,36 @@ APP_PORT=3001
 FRONTEND_DOMAIN=http://localhost:3000
 
 # Database
+DATABASE_TYPE=postgres
 DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_NAME=boilerplate_db
 DATABASE_USERNAME=postgres
 DATABASE_PASSWORD=your_password
+DATABASE_LOG=false
+DATABASE_SYNCHRONIZE=false
 
 # JWT (generate a strong secret)
 JWT_SECRET=your_super_secret_key_here
+JWT_ACCESS_TOKEN_EXPIRES_IN=900        # 15 minutes (seconds)
+JWT_REFRESH_TOKEN_EXPIRES_IN=604800   # 7 days (seconds)
+BCRYPT_SALT_ROUNDS=10
+PASSWORD_RESET_EXPIRES_IN=3600        # 1 hour (seconds)
 
 # Email (for dev, set MAIL_PREVIEW=true)
 MAIL_PREVIEW=true
+MAIL_HOST=smtp.ethereal.email
+MAIL_PORT=587
+MAIL_SECURE=false
+MAIL_USER=your_email@example.com
+MAIL_PASS=your_password
+MAIL_DEFAULT_FROM=noreply@example.com
 
 # SMS (for dev, set TWILIO_PREVIEW_MODE=true)
 TWILIO_PREVIEW_MODE=true
+TWILIO_ACCOUNT_SID=your_account_sid
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_FROM_NUMBER=+1234567890
 ```
 
 ### 3. Create Database
@@ -126,7 +148,19 @@ From the workspace root:
 npm install
 ```
 
-### 5. Run the Application
+### 5. Run Migrations
+
+```bash
+cd apps/backend
+
+# Run migrations
+npm run migration:run
+
+# Run seeders (optional)
+npm run seed:run
+```
+
+### 6. Run the Application
 
 ```bash
 # Development mode (with hot reload)
@@ -137,7 +171,7 @@ npx nx build backend
 npx nx serve backend --configuration=prod
 ```
 
-### 6. Access the API
+### 7. Access the API
 
 - **API Base URL**: `http://localhost:3001/api`
 - **Swagger Docs**: `http://localhost:3001/api/docs`
@@ -149,30 +183,27 @@ npx nx serve backend --configuration=prod
 
 ### Flow
 
-1. **Register** → Creates user + sends verification email
+1. **Register** → Creates user + sends welcome email
 2. **Login** → Returns access token + refresh token
 3. **Access Token** → Short-lived (15 min), used for API calls
 4. **Refresh Token** → Long-lived (7 days), used to get new access token
-5. **Sessions** → Stored in database, can be revoked
+5. **Sessions** → Stored in database with hash, can be revoked
 
 ### Endpoints
 
-| Method | Endpoint                           | Description            | Auth Required |
-| ------ | ---------------------------------- | ---------------------- | ------------- |
-| POST   | `/api/v1/auth/register`            | Register new user      | No            |
-| POST   | `/api/v1/auth/login`               | Login                  | No            |
-| POST   | `/api/v1/auth/refresh-token`       | Refresh access token   | No            |
-| POST   | `/api/v1/auth/logout`              | Logout current session | Yes           |
-| POST   | `/api/v1/auth/logout-all`          | Logout all sessions    | Yes           |
-| POST   | `/api/v1/auth/forgot-password`     | Request password reset | No            |
-| POST   | `/api/v1/auth/reset-password`      | Reset password         | No            |
-| POST   | `/api/v1/auth/change-password`     | Change password        | Yes           |
-| POST   | `/api/v1/auth/verify-email`        | Verify email (token)   | No            |
-| POST   | `/api/v1/auth/verify-email/code`   | Verify email (code)    | Yes           |
-| POST   | `/api/v1/auth/resend-verification` | Resend verification    | Yes           |
-| GET    | `/api/v1/auth/sessions`            | Get active sessions    | Yes           |
-| DELETE | `/api/v1/auth/sessions/:id`        | Revoke a session       | Yes           |
-| GET    | `/api/v1/auth/me`                  | Get current user       | Yes           |
+| Method | Endpoint                       | Description            | Auth Required |
+| ------ | ------------------------------ | ---------------------- | ------------- |
+| POST   | `/api/v1/auth/register`        | Register new user      | No            |
+| POST   | `/api/v1/auth/login`           | Login                  | No            |
+| POST   | `/api/v1/auth/refresh-token`   | Refresh access token   | No            |
+| POST   | `/api/v1/auth/logout`          | Logout current session | Yes           |
+| POST   | `/api/v1/auth/logout-all`      | Logout all sessions    | Yes           |
+| POST   | `/api/v1/auth/forgot-password` | Request password reset | No            |
+| POST   | `/api/v1/auth/reset-password`  | Reset password         | No            |
+| POST   | `/api/v1/auth/change-password` | Change password        | Yes           |
+| GET    | `/api/v1/auth/sessions`        | Get active sessions    | Yes           |
+| DELETE | `/api/v1/auth/sessions/:hash`  | Revoke a session       | Yes           |
+| GET    | `/api/v1/auth/me`              | Get current user       | Yes           |
 
 ### Using Authentication
 
@@ -263,7 +294,6 @@ export class MyService {
   async sendWelcome(email: string, name: string) {
     await this.emailService.sendWelcomeEmail(email, {
       name,
-      verificationLink: 'https://...',
     });
   }
 
@@ -393,6 +423,28 @@ All responses follow a standardized format:
     }
   }
 }
+```
+
+---
+
+## 🗃️ Database Migrations
+
+See [Database README](./src/database/README.md) for detailed migration documentation.
+
+### Quick Commands
+
+```bash
+# Run migrations
+npm run migration:run
+
+# Check status
+npm run migration:status
+
+# Rollback
+npm run migration:rollback
+
+# Run seeders
+npm run seed:run
 ```
 
 ---
