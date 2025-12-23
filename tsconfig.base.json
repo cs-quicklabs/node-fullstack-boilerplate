@@ -16,6 +16,12 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@org/source"]
+    "customConditions": ["@org/source"],
+    "paths": {
+      "@boilerplate/mailer": ["packages/mailer/src/index.ts"],
+      "@boilerplate/mailer/*": ["packages/mailer/src/*"],
+      "@boilerplate/sms": ["packages/sms/src/index.ts"],
+      "@boilerplate/sms/*": ["packages/sms/src/*"]
+    }
   }
 }

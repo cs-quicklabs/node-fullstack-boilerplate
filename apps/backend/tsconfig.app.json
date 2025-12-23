@@ -10,7 +10,11 @@
     "target": "es2021",
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@boilerplate/mailer": ["../../packages/mailer/src/index.ts"],
+      "@boilerplate/mailer/*": ["../../packages/mailer/src/*"],
+      "@boilerplate/sms": ["../../packages/sms/src/index.ts"],
+      "@boilerplate/sms/*": ["../../packages/sms/src/*"]
     }
   },
   "include": ["src/**/*.ts"],
