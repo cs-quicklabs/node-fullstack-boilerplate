@@ -3,7 +3,11 @@
   "description": "Boilerplate for Nx workspace with Next.js and NestJS",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html,yml,yaml}\"",
+    "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html,yml,yaml}\""
+  },
   "private": true,
   "devDependencies": {
     "@eslint/js": "^9.8.0",

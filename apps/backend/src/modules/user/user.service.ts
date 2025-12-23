@@ -8,7 +8,7 @@ import { CreateUserDto, UpdateUserDto } from './dtos';
 
 /**
  * User Service
- * 
+ *
  * Extends BaseCrudService following DRY
  * DIP: Uses PasswordService for password operations
  * SRP: Manages user CRUD only

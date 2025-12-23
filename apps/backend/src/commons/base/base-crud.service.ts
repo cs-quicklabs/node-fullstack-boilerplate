@@ -1,10 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model, ModelStatic, FindOptions, Op } from 'sequelize';
-import {
-  BaseCrudServiceInterface,
-  FindAllOptions,
-  PaginatedResult,
-} from './interfaces';
+import { BaseCrudServiceInterface, FindAllOptions, PaginatedResult } from './interfaces';
 
 @Injectable()
 export abstract class BaseCrudService<
@@ -242,4 +238,3 @@ export abstract class BaseCrudService<
     return entity;
   }
 }
-

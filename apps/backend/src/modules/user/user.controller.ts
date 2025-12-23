@@ -10,13 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dtos';
 import { PaginationDto } from '@src/commons/base/dtos';
@@ -41,10 +35,7 @@ export class UserController {
   @ApiQuery({ name: 'sortBy', required: false })
   @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
   @ApiQuery({ name: 'search', required: false })
-  async findAll(
-    @CurrentUser() user: CurrentUserType,
-    @Query() pagination: PaginationDto,
-  ) {
+  async findAll(@CurrentUser() user: CurrentUserType, @Query() pagination: PaginationDto) {
     // Super admin can see all users, admin can see only their organization
     if (user.userTypeCode === 'SUPER_ADMIN') {
       const result = pagination.search
@@ -64,14 +55,12 @@ export class UserController {
   @ApiOperation({ summary: 'Get user by ID' })
   @ApiResponse({ status: 200, description: 'User found' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async findOne(
-    @CurrentUser() user: CurrentUserType,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
+  async findOne(@CurrentUser() user: CurrentUserType, @Param('id', ParseIntPipe) id: number) {
     // Admin can access their own org users, super admin can access all
-    const foundUser = user.userTypeCode === 'SUPER_ADMIN'
-      ? await this.userService.findOne(id)
-      : await this.userService.findOneByOrganization(id, user.organizationId);
+    const foundUser =
+      user.userTypeCode === 'SUPER_ADMIN'
+        ? await this.userService.findOne(id)
+        : await this.userService.findOneByOrganization(id, user.organizationId);
 
     if (!foundUser) {
       return new SuccessResponse('User not found', null);
@@ -85,10 +74,7 @@ export class UserController {
   @ApiOperation({ summary: 'Get user by UUID' })
   @ApiResponse({ status: 200, description: 'User found' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async findByUuid(
-    @CurrentUser() user: CurrentUserType,
-    @Param('uuid') uuid: string,
-  ) {
+  async findByUuid(@CurrentUser() user: CurrentUserType, @Param('uuid') uuid: string) {
     const foundUser = await this.userService.findByUuid(uuid);
 
     if (!foundUser) {
@@ -109,10 +95,7 @@ export class UserController {
   @ApiOperation({ summary: 'Create a new user (Admin only)' })
   @ApiResponse({ status: 201, description: 'User created successfully' })
   @ApiResponse({ status: 409, description: 'Email already registered' })
-  async create(
-    @CurrentUser() user: CurrentUserType,
-    @Body() dto: CreateUserDto,
-  ) {
+  async create(@CurrentUser() user: CurrentUserType, @Body() dto: CreateUserDto) {
     // Admin can only create users in their organization
     if (user.userTypeCode !== 'SUPER_ADMIN') {
       dto.organizationId = user.organizationId;
@@ -151,10 +134,7 @@ export class UserController {
   @ApiOperation({ summary: 'Delete user (soft delete) (Admin only)' })
   @ApiResponse({ status: 200, description: 'User deleted successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async remove(
-    @CurrentUser() user: CurrentUserType,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
+  async remove(@CurrentUser() user: CurrentUserType, @Param('id', ParseIntPipe) id: number) {
     // Verify user belongs to organization (for non-super admin)
     if (user.userTypeCode !== 'SUPER_ADMIN') {
       const existingUser = await this.userService.findOneByOrganization(id, user.organizationId);
@@ -183,4 +163,3 @@ export class UserController {
     return new SuccessResponse('User restored successfully', restoredUser);
   }
 }
-

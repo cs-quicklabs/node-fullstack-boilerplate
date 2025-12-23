@@ -11,4 +11,3 @@ import { OrganizationEntity } from '@src/entities';
   exports: [OrganizationService],
 })
 export class OrganizationModule {}
-

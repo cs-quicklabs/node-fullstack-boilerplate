@@ -4,7 +4,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 export function setupSwagger(app: INestApplication, globalPrefix: string) {
   const config = new DocumentBuilder()
     .setTitle('Boilerplate API')
-    .setDescription(`
+    .setDescription(
+      `
 ## API Documentation for Boilerplate Nest-Next Application
 
 ### Authentication
@@ -24,7 +25,8 @@ This is a multi-tenant application. Users belong to organizations and can only a
 - Refresh tokens expire after 7 days
 - Use the refresh token endpoint to get new access tokens
 - Sessions are stored in the database and can be revoked
-    `)
+    `,
+    )
     .setVersion('1.0')
     .addBearerAuth()
     .addTag('Authentication', 'User authentication and session management')
@@ -34,7 +36,7 @@ This is a multi-tenant application. Users belong to organizations and can only a
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  
+
   SwaggerModule.setup(`${globalPrefix}/docs`, app, document, {
     swaggerOptions: {
       persistAuthorization: true,

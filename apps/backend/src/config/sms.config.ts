@@ -1,9 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import {
-  IsBoolean,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 import { validateConfig } from '@src/commons/utils';
 
 export interface SmsConfigType {
@@ -43,4 +39,3 @@ export default registerAs<SmsConfigType>('sms', () => {
     previewMode: process.env.TWILIO_PREVIEW_MODE === 'true' || isDev,
   };
 });
-

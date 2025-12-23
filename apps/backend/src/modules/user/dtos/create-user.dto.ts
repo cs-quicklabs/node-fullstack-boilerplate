@@ -34,16 +34,14 @@ export class CreateUserDto {
 
   @ApiProperty({
     example: 'StrongP@ssw0rd!',
-    description: 'Password (min 8 chars, must include uppercase, lowercase, number, and special char)',
+    description:
+      'Password (min 8 chars, must include uppercase, lowercase, number, and special char)',
   })
   @IsString()
   @MinLength(8, { message: 'Password must be at least 8 characters long' })
-  @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-    {
-      message: 'Password must include uppercase, lowercase, number, and special character',
-    },
-  )
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, {
+    message: 'Password must include uppercase, lowercase, number, and special character',
+  })
   password: string;
 
   @ApiPropertyOptional({ example: '+1234567890', description: 'Phone number' })
@@ -71,4 +69,3 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'User type ID is required' })
   userTypeId: number;
 }
-

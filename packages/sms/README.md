@@ -32,7 +32,7 @@ import { SmsModule } from '@boilerplate/sms';
       accountSid: 'your-twilio-account-sid',
       authToken: 'your-twilio-auth-token',
       fromNumber: '+1234567890',
-      previewMode: true,  // Set to true for dev mode
+      previewMode: true, // Set to true for dev mode
     }),
   ],
 })
@@ -99,13 +99,13 @@ Async configuration with factory function.
 
 ### SmsModuleOptions
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `accountSid` | `string` | Yes | Twilio Account SID |
-| `authToken` | `string` | Yes | Twilio Auth Token |
-| `fromNumber` | `string` | Yes | Twilio phone number (sender) |
-| `previewMode` | `boolean` | No | Enable dev preview mode (default: false) |
-| `isGlobal` | `boolean` | No | Register as global module (default: false) |
+| Property      | Type      | Required | Description                                |
+| ------------- | --------- | -------- | ------------------------------------------ |
+| `accountSid`  | `string`  | Yes      | Twilio Account SID                         |
+| `authToken`   | `string`  | Yes      | Twilio Auth Token                          |
+| `fromNumber`  | `string`  | Yes      | Twilio phone number (sender)               |
+| `previewMode` | `boolean` | No       | Enable dev preview mode (default: false)   |
+| `isGlobal`    | `boolean` | No       | Register as global module (default: false) |
 
 ### SmsService
 
@@ -115,12 +115,12 @@ Send an SMS message.
 
 **SendSmsOptions:**
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `to` | `string` | Yes | Recipient phone number (E.164 format) |
-| `body` | `string` | Yes | Message content |
-| `from` | `string` | No | Override default sender number |
-| `mediaUrl` | `string[]` | No | MMS media URLs |
+| Property   | Type       | Required | Description                           |
+| ---------- | ---------- | -------- | ------------------------------------- |
+| `to`       | `string`   | Yes      | Recipient phone number (E.164 format) |
+| `body`     | `string`   | Yes      | Message content                       |
+| `from`     | `string`   | No       | Override default sender number        |
+| `mediaUrl` | `string[]` | No       | MMS media URLs                        |
 
 **SmsResponse:**
 
@@ -165,6 +165,7 @@ console.log(result.previewData);
 ### Preview Screenshot
 
 The preview shows:
+
 - 📱 A phone mockup
 - 💬 Your message in a chat bubble
 - 📞 To/From numbers
@@ -177,12 +178,12 @@ Always use E.164 format for phone numbers:
 
 ```typescript
 // ✅ Correct
-'+14155552671'
-'+447911123456'
+'+14155552671';
+'+447911123456';
 
 // ❌ Incorrect
-'4155552671'
-'(415) 555-2671'
+'4155552671';
+'(415) 555-2671';
 ```
 
 ## 🖼️ MMS (Media Messages)
@@ -220,12 +221,12 @@ TWILIO_PREVIEW_MODE=true   # Set to false in production
 ```typescript
 async sendOtp(phone: string): Promise<string> {
   const code = Math.floor(100000 + Math.random() * 900000).toString();
-  
+
   await this.smsService.sendSms({
     to: phone,
     body: `Your verification code is: ${code}. Valid for 10 minutes.`,
   });
-  
+
   return code;
 }
 ```
@@ -262,4 +263,3 @@ async sendReminder(phone: string, appointment: { date: string; time: string }) {
 ## 📄 License
 
 MIT
-

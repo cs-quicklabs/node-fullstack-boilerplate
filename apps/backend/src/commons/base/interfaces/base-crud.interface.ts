@@ -37,4 +37,3 @@ export interface BaseCrudServiceInterface<T extends Model, CreateDto, UpdateDto>
   count(where?: Record<string, unknown>): Promise<number>;
   exists(id: number): Promise<boolean>;
 }
-

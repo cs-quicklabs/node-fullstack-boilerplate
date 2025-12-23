@@ -41,9 +41,7 @@ export interface MailerModuleOptions {
 
 export interface MailerModuleAsyncOptions {
   isGlobal?: boolean;
-  useFactory: (
-    ...args: unknown[]
-  ) => Promise<MailerModuleOptions> | MailerModuleOptions;
+  useFactory: (...args: unknown[]) => Promise<MailerModuleOptions> | MailerModuleOptions;
   inject?: unknown[];
 }
 

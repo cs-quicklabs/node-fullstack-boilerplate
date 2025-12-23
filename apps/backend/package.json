@@ -2,6 +2,13 @@
   "name": "backend",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "migration:run": "ts-node src/database/run-migrations.ts up",
+    "migration:rollback": "ts-node src/database/run-migrations.ts down",
+    "migration:status": "ts-node src/database/run-migrations.ts status",
+    "migration:fresh": "ts-node src/database/run-migrations.ts fresh",
+    "seed:run": "ts-node src/database/run-migrations.ts seed"
+  },
   "nx": {
     "targets": {
       "build": {
@@ -76,6 +83,41 @@
           }
         }
       },
+      "migration:run": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "ts-node src/database/run-migrations.ts up",
+          "cwd": "apps/backend"
+        }
+      },
+      "migration:rollback": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "ts-node src/database/run-migrations.ts down",
+          "cwd": "apps/backend"
+        }
+      },
+      "migration:status": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "ts-node src/database/run-migrations.ts status",
+          "cwd": "apps/backend"
+        }
+      },
+      "migration:fresh": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "ts-node src/database/run-migrations.ts fresh",
+          "cwd": "apps/backend"
+        }
+      },
+      "seed:run": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "ts-node src/database/run-migrations.ts seed",
+          "cwd": "apps/backend"
+        }
+      },
       "test": {
         "options": {
           "passWithNoTests": true
@@ -93,6 +135,7 @@
     "@nestjs/sequelize": "^11.0.1",
     "@nestjs/swagger": "^11.2.3",
     "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
     "handlebars": "^4.7.8",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
@@ -116,6 +159,7 @@
     "@types/morgan": "^1.9.10",
     "@types/sequelize": "^4.28.20",
     "concurrently": "^9.2.1",
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2"
   }
 }

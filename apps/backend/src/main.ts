@@ -21,22 +21,19 @@ async function bootstrap() {
 
   // Adding checks if the req.ip has valid ipv4 otherwiseit checks for
   // x-forwarded-for and if it doesn't exists it will check for connection.remoteAddress
-  morgan.token(
-    'client-ip',
-    (req: Request) => {
-      // Safely extract client IP, supporting various headers and properties
-      const ip =
-        (typeof req.ip === 'string' && /^(\d{1,3}\.){3}\d{1,3}$/.test(req.ip) && req.ip) ||
-        (typeof req.headers['x-forwarded-for'] === 'string'
-          ? req.headers['x-forwarded-for'].split(',')[0].trim()
-          : undefined) ||
-        (req.connection && req.connection.remoteAddress) ||
-        (typeof req.headers['x-client-ip'] === 'string' && req.headers['x-client-ip']) ||
-        undefined;
+  morgan.token('client-ip', (req: Request) => {
+    // Safely extract client IP, supporting various headers and properties
+    const ip =
+      (typeof req.ip === 'string' && /^(\d{1,3}\.){3}\d{1,3}$/.test(req.ip) && req.ip) ||
+      (typeof req.headers['x-forwarded-for'] === 'string'
+        ? req.headers['x-forwarded-for'].split(',')[0].trim()
+        : undefined) ||
+      (req.connection && req.connection.remoteAddress) ||
+      (typeof req.headers['x-client-ip'] === 'string' && req.headers['x-client-ip']) ||
+      undefined;
 
-      return ip;
-    }
-  );
+    return ip;
+  });
 
   // adding request logger to the application
   app.use(
@@ -100,11 +97,9 @@ async function bootstrap() {
   const port = configService.getOrThrow('app.port', { infer: true });
 
   await app.listen(port);
+  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
-  );
-  Logger.log(
-    `📚 Swagger documentation available at: http://localhost:${port}/${globalPrefix}/docs`
+    `📚 Swagger documentation available at: http://localhost:${port}/${globalPrefix}/docs`,
   );
 }
 

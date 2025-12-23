@@ -6,7 +6,7 @@ import { ITokenService, TokenPayloadInput, JwtPayload, JwtTokens } from '../inte
 
 /**
  * Token Service Implementation
- * 
+ *
  * SRP: Handles all JWT token operations:
  * - Generating access/refresh tokens
  * - Verifying tokens
@@ -20,8 +20,12 @@ export class TokenService implements ITokenService {
 
   constructor(private readonly configService: ConfigService<AllConfigType>) {
     this.jwtSecret = this.configService.getOrThrow('auth.jwtSecret', { infer: true });
-    this.accessTokenExpiresIn = this.configService.getOrThrow('auth.jwtAccessTokenExpiresIn', { infer: true });
-    this.refreshTokenExpiresIn = this.configService.getOrThrow('auth.jwtRefreshTokenExpiresIn', { infer: true });
+    this.accessTokenExpiresIn = this.configService.getOrThrow('auth.jwtAccessTokenExpiresIn', {
+      infer: true,
+    });
+    this.refreshTokenExpiresIn = this.configService.getOrThrow('auth.jwtRefreshTokenExpiresIn', {
+      infer: true,
+    });
   }
 
   generateTokens(input: TokenPayloadInput): JwtTokens {
@@ -63,11 +67,11 @@ export class TokenService implements ITokenService {
   verifyToken(token: string): JwtPayload {
     try {
       const decoded = jwt.verify(token, this.jwtSecret);
-      
+
       if (typeof decoded === 'string') {
         throw new UnauthorizedException('Invalid token format');
       }
-      
+
       return decoded as unknown as JwtPayload;
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
@@ -100,4 +104,3 @@ export class TokenService implements ITokenService {
     return this.refreshTokenExpiresIn;
   }
 }
-

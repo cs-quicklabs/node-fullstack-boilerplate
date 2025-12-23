@@ -24,8 +24,8 @@ export const useCounterStore = create<CounterState>()(
       decrement: () => set((state) => ({ count: state.count - 1 })),
       reset: () => set({ count: 0 }),
     }),
-    { name: 'CounterStore' }
-  )
+    { name: 'CounterStore' },
+  ),
 );
 
 // Example 2: User Store with Async Actions
@@ -64,8 +64,8 @@ export const useUserStore = create<UserState>()(
         }
       },
     }),
-    { name: 'UserStore' }
-  )
+    { name: 'UserStore' },
+  ),
 );
 
 // Example 3: Store with Persistence (saves to localStorage)
@@ -87,10 +87,10 @@ export const useSettingsStore = create<SettingsState>()(
       }),
       {
         name: 'settings-storage', // localStorage key
-      }
+      },
     ),
-    { name: 'SettingsStore' }
-  )
+    { name: 'SettingsStore' },
+  ),
 );
 
 // Example 4: Computed Values (Selectors)
@@ -112,7 +112,7 @@ export const useTodoStore = create<TodoState>()(
       toggleTodo: (id) =>
         set((state) => ({
           todos: state.todos.map((todo) =>
-            todo.id === id ? { ...todo, completed: !todo.completed } : todo
+            todo.id === id ? { ...todo, completed: !todo.completed } : todo,
           ),
         })),
       removeTodo: (id) =>
@@ -120,8 +120,8 @@ export const useTodoStore = create<TodoState>()(
           todos: state.todos.filter((todo) => todo.id !== id),
         })),
     }),
-    { name: 'TodoStore' }
-  )
+    { name: 'TodoStore' },
+  ),
 );
 
 // Selectors for computed values

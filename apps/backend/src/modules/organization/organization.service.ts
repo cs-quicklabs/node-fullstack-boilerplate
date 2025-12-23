@@ -22,13 +22,7 @@ export class OrganizationService extends BaseCrudService<
   }
 
   async findAll(options: FindAllOptions = {}): Promise<PaginatedResult<OrganizationEntity>> {
-    const {
-      page = 1,
-      limit = 10,
-      sortBy = 'createdAt',
-      sortOrder = 'DESC',
-      where = {},
-    } = options;
+    const { page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'DESC', where = {} } = options;
 
     const safeLimit = Math.min(Math.max(1, limit), 100);
     const safePage = Math.max(1, page);
@@ -158,4 +152,3 @@ export class OrganizationService extends BaseCrudService<
     });
   }
 }
-

@@ -50,4 +50,3 @@ export interface CreateSessionInput {
 }
 
 export const SESSION_SERVICE = Symbol('ISessionService');
-

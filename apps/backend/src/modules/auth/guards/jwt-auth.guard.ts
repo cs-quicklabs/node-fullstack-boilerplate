@@ -1,9 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { InjectModel } from '@nestjs/sequelize';
 import { Request } from 'express';
@@ -14,10 +9,10 @@ import { UserEntity, UserTypeEntity } from '@src/entities';
 
 /**
  * JWT Auth Guard
- * 
+ *
  * SRP: Responsible only for authentication flow control
  * DIP: Depends on TokenService and SessionService abstractions
- * 
+ *
  * Validates:
  * 1. Token presence and validity
  * 2. Session validity

@@ -1,4 +1,4 @@
-import { ResponseInterface } from "../interfaces"
+import { ResponseInterface } from '../interfaces';
 
 export class SuccessResponse implements ResponseInterface {
   constructor(message: string, data: unknown | unknown[] = {}) {

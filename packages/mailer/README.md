@@ -38,7 +38,7 @@ import { MailerModule } from '@boilerplate/mailer';
         pass: 'your-password',
       },
       defaultFrom: 'noreply@example.com',
-      previewEmail: true,  // Set to true for dev mode
+      previewEmail: true, // Set to true for dev mode
     }),
   ],
 })
@@ -112,16 +112,16 @@ Async configuration with factory function.
 
 ### MailerModuleOptions
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `host` | `string` | Yes | SMTP server host |
-| `port` | `number` | Yes | SMTP server port |
-| `secure` | `boolean` | Yes | Use TLS (true for 465, false for other ports) |
-| `auth.user` | `string` | Yes | SMTP username |
-| `auth.pass` | `string` | Yes | SMTP password |
-| `defaultFrom` | `string` | Yes | Default sender address |
-| `previewEmail` | `boolean` | No | Enable dev preview mode (default: false) |
-| `isGlobal` | `boolean` | No | Register as global module (default: false) |
+| Property       | Type      | Required | Description                                   |
+| -------------- | --------- | -------- | --------------------------------------------- |
+| `host`         | `string`  | Yes      | SMTP server host                              |
+| `port`         | `number`  | Yes      | SMTP server port                              |
+| `secure`       | `boolean` | Yes      | Use TLS (true for 465, false for other ports) |
+| `auth.user`    | `string`  | Yes      | SMTP username                                 |
+| `auth.pass`    | `string`  | Yes      | SMTP password                                 |
+| `defaultFrom`  | `string`  | Yes      | Default sender address                        |
+| `previewEmail` | `boolean` | No       | Enable dev preview mode (default: false)      |
+| `isGlobal`     | `boolean` | No       | Register as global module (default: false)    |
 
 ### MailerService
 
@@ -131,16 +131,16 @@ Send an email.
 
 **SendMailOptions:**
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `to` | `string \| string[]` | Yes | Recipient(s) |
-| `subject` | `string` | Yes | Email subject |
-| `text` | `string` | No | Plain text body |
-| `html` | `string` | No | HTML body |
-| `from` | `string` | No | Override default sender |
-| `cc` | `string \| string[]` | No | CC recipients |
-| `bcc` | `string \| string[]` | No | BCC recipients |
-| `attachments` | `Attachment[]` | No | File attachments |
+| Property      | Type                 | Required | Description             |
+| ------------- | -------------------- | -------- | ----------------------- |
+| `to`          | `string \| string[]` | Yes      | Recipient(s)            |
+| `subject`     | `string`             | Yes      | Email subject           |
+| `text`        | `string`             | No       | Plain text body         |
+| `html`        | `string`             | No       | HTML body               |
+| `from`        | `string`             | No       | Override default sender |
+| `cc`          | `string \| string[]` | No       | CC recipients           |
+| `bcc`         | `string \| string[]` | No       | BCC recipients          |
+| `attachments` | `Attachment[]`       | No       | File attachments        |
 
 **MailResponse:**
 
@@ -227,4 +227,3 @@ MAIL_PREVIEW=true   # Set to false in production
 ## 📄 License
 
 MIT
-

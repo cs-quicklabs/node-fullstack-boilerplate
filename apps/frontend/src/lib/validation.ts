@@ -9,7 +9,7 @@ import { z } from 'zod';
 // Generic validation function
 export function validate<T extends z.ZodTypeAny>(
   schema: T,
-  data: unknown
+  data: unknown,
 ): { success: true; data: z.infer<T> } | { success: false; errors: string[] } {
   const result = schema.safeParse(data);
 
@@ -47,7 +47,7 @@ export function formatZodErrors(error: z.ZodError): Record<string, string> {
 // Validate API response
 export async function validateApiResponse<T extends z.ZodTypeAny>(
   response: Response,
-  schema: T
+  schema: T,
 ): Promise<z.infer<T>> {
   const data = await response.json();
   return validateOrThrow(schema, data);

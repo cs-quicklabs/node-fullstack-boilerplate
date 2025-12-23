@@ -7,7 +7,7 @@ import { IPasswordService } from '../interfaces';
 
 /**
  * Password Service Implementation
- * 
+ *
  * SRP: Handles all password-related operations:
  * - Hashing passwords
  * - Comparing passwords
@@ -35,4 +35,3 @@ export class PasswordService implements IPasswordService {
     return crypto.randomBytes(32).toString('hex');
   }
 }
-

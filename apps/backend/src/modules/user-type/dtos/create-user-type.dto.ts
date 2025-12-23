@@ -1,11 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Matches,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, Matches } from 'class-validator';
 
 export class CreateUserTypeDto {
   @ApiProperty({ example: 'Administrator', description: 'User type name' })
@@ -13,7 +7,10 @@ export class CreateUserTypeDto {
   @IsNotEmpty({ message: 'Name is required' })
   name: string;
 
-  @ApiProperty({ example: 'ADMIN', description: 'Unique code for the user type (uppercase, no spaces)' })
+  @ApiProperty({
+    example: 'ADMIN',
+    description: 'Unique code for the user type (uppercase, no spaces)',
+  })
   @IsString()
   @IsNotEmpty({ message: 'Code is required' })
   @Matches(/^[A-Z][A-Z0-9_]*$/, {
@@ -31,4 +28,3 @@ export class CreateUserTypeDto {
   @IsOptional()
   isActive?: boolean;
 }
-

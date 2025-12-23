@@ -156,15 +156,15 @@ async getMyOrg(@CurrentUser('organizationId') orgId: number) {
 
 ```typescript
 interface CurrentUser {
-  id: number;              // User ID
-  uuid: string;            // User UUID
-  email: string;           // User email
-  firstName: string;       // First name
-  lastName: string;        // Last name
-  organizationId: number;  // Organization ID
-  userTypeId: number;      // User type ID
-  userTypeCode: string;    // User type code (e.g., 'ADMIN')
-  sessionId: number;       // Current session ID
+  id: number; // User ID
+  uuid: string; // User UUID
+  email: string; // User email
+  firstName: string; // First name
+  lastName: string; // Last name
+  organizationId: number; // Organization ID
+  userTypeId: number; // User type ID
+  userTypeCode: string; // User type code (e.g., 'ADMIN')
+  sessionId: number; // Current session ID
 }
 ```
 
@@ -172,47 +172,48 @@ interface CurrentUser {
 
 ### Public Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/auth/register` | Register new user |
-| POST | `/auth/login` | Login and get tokens |
-| POST | `/auth/refresh-token` | Refresh access token |
-| POST | `/auth/forgot-password` | Request password reset |
-| POST | `/auth/reset-password` | Reset password with token |
-| POST | `/auth/verify-email` | Verify email with token |
+| Method | Endpoint                | Description               |
+| ------ | ----------------------- | ------------------------- |
+| POST   | `/auth/register`        | Register new user         |
+| POST   | `/auth/login`           | Login and get tokens      |
+| POST   | `/auth/refresh-token`   | Refresh access token      |
+| POST   | `/auth/forgot-password` | Request password reset    |
+| POST   | `/auth/reset-password`  | Reset password with token |
+| POST   | `/auth/verify-email`    | Verify email with token   |
 
 ### Protected Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/auth/logout` | Logout current session |
-| POST | `/auth/logout-all` | Logout all sessions |
-| POST | `/auth/change-password` | Change password |
-| POST | `/auth/verify-email/code` | Verify email with code |
-| POST | `/auth/resend-verification` | Resend verification email |
-| GET | `/auth/sessions` | Get active sessions |
-| DELETE | `/auth/sessions/:id` | Revoke a session |
-| GET | `/auth/me` | Get current user info |
+| Method | Endpoint                    | Description               |
+| ------ | --------------------------- | ------------------------- |
+| POST   | `/auth/logout`              | Logout current session    |
+| POST   | `/auth/logout-all`          | Logout all sessions       |
+| POST   | `/auth/change-password`     | Change password           |
+| POST   | `/auth/verify-email/code`   | Verify email with code    |
+| POST   | `/auth/resend-verification` | Resend verification email |
+| GET    | `/auth/sessions`            | Get active sessions       |
+| DELETE | `/auth/sessions/:id`        | Revoke a session          |
+| GET    | `/auth/me`                  | Get current user info     |
 
 ## 🔒 Password Requirements
 
 Passwords must:
+
 - Be at least 8 characters
 - Include uppercase letter
 - Include lowercase letter
 - Include number
-- Include special character (@$!%*?&)
+- Include special character (@$!%\*?&)
 
 ## ⏱️ Token Expiration
 
 Default values (configurable via environment):
 
-| Token | Expiration |
-|-------|------------|
-| Access Token | 15 minutes |
-| Refresh Token | 7 days |
-| Password Reset | 1 hour |
-| Email Verification | 24 hours |
+| Token              | Expiration |
+| ------------------ | ---------- |
+| Access Token       | 15 minutes |
+| Refresh Token      | 7 days     |
+| Password Reset     | 1 hour     |
+| Email Verification | 24 hours   |
 
 ## 💾 Session Entity
 
@@ -259,6 +260,7 @@ EMAIL_VERIFICATION_EXPIRES_IN=86400    # 24 hours
 ## 📧 Email Integration
 
 The auth service sends emails for:
+
 - Email verification (on registration)
 - Password reset requests
 - Resend verification
@@ -275,28 +277,26 @@ import { CurrentUser as UserType } from './interfaces';
 
 @Controller('items')
 export class ItemsController {
-  
   // Public endpoint
   @Public()
   @Get('public')
-  async getPublicItems() { }
-  
+  async getPublicItems() {}
+
   // Authenticated users only
   @Get()
   async getItems(@CurrentUser() user: UserType) {
     return this.itemsService.findByOrg(user.organizationId);
   }
-  
+
   // Admin only
   @UseGuards(RolesGuard)
   @Roles('ADMIN', 'SUPER_ADMIN')
   @Post()
-  async createItem(@Body() dto: CreateItemDto) { }
-  
+  async createItem(@Body() dto: CreateItemDto) {}
+
   // Organization-scoped
   @UseGuards(OrganizationGuard)
   @Get('org/:organizationId')
-  async getOrgItems(@Param('organizationId') orgId: number) { }
+  async getOrgItems(@Param('organizationId') orgId: number) {}
 }
 ```
-

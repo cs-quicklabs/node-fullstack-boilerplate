@@ -1,7 +1,16 @@
-import { BelongsTo, Column, DataType, ForeignKey, Index, IsUUID, Sequelize, Table } from "sequelize-typescript";
-import { BaseEntity } from "./base.entity";
-import { UserTypeEntity } from "./user-type.entity";
-import { OrganizationEntity } from "./organization.entity";
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  Index,
+  IsUUID,
+  Sequelize,
+  Table,
+} from 'sequelize-typescript';
+import { BaseEntity } from './base.entity';
+import { UserTypeEntity } from './user-type.entity';
+import { OrganizationEntity } from './organization.entity';
 
 @Table({
   tableName: 'user',

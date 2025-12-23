@@ -23,7 +23,7 @@ import { SessionEntity, UserEntity } from './entities';
 
 /**
  * Application Root Module
- * 
+ *
  * DIP: Uses abstractions via module imports
  * SRP: Configuration and wiring only
  */
@@ -34,15 +34,15 @@ import { SessionEntity, UserEntity } from './entities';
       load: [appConfig, databaseConfig, authConfig, mailerConfig, smsConfig],
       isGlobal: true,
     }),
-    
+
     // Database
     SequelizeModule.forRootAsync({
       useClass: SequelizeConfigService,
     }),
-    
+
     // Register entities for global guards
     SequelizeFeatureModule.forFeature([SessionEntity, UserEntity]),
-    
+
     // Mailer Package (only for sending)
     MailerModule.forRootAsync({
       isGlobal: true,
@@ -62,7 +62,7 @@ import { SessionEntity, UserEntity } from './entities';
       },
       inject: [ConfigService],
     }),
-    
+
     // SMS Package (only for sending)
     SmsModule.forRootAsync({
       isGlobal: true,
@@ -77,7 +77,7 @@ import { SessionEntity, UserEntity } from './entities';
       },
       inject: [ConfigService],
     }),
-    
+
     // Feature Modules
     AuthModule,
     UserModule,

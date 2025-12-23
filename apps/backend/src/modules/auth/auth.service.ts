@@ -8,12 +8,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/sequelize';
 import { AllConfigType } from '@src/config/config.type';
-import {
-  UserEntity,
-  UserTypeEntity,
-  OrganizationEntity,
-  PasswordResetEntity,
-} from '@src/entities';
+import { UserEntity, UserTypeEntity, OrganizationEntity, PasswordResetEntity } from '@src/entities';
 import { EmailService } from '@src/commons/services';
 import {
   RegisterDto,
@@ -27,13 +22,13 @@ import { PasswordService, TokenService, SessionService } from './services';
 
 /**
  * Auth Service - Orchestrator
- * 
+ *
  * SRP: This service orchestrates authentication flows by delegating to:
  * - PasswordService: password hashing/validation
  * - TokenService: JWT token generation/validation
  * - SessionService: session management
  * - EmailService: email notifications
- * 
+ *
  * OCP: New authentication methods can be added without modifying existing code
  * DIP: Depends on abstractions (services) rather than concrete implementations
  */
@@ -58,8 +53,12 @@ export class AuthService {
     @InjectModel(PasswordResetEntity)
     private readonly passwordResetModel: typeof PasswordResetEntity,
   ) {
-    this.refreshTokenExpiresIn = this.configService.getOrThrow('auth.jwtRefreshTokenExpiresIn', { infer: true });
-    this.passwordResetExpiresIn = this.configService.getOrThrow('auth.passwordResetExpiresIn', { infer: true });
+    this.refreshTokenExpiresIn = this.configService.getOrThrow('auth.jwtRefreshTokenExpiresIn', {
+      infer: true,
+    });
+    this.passwordResetExpiresIn = this.configService.getOrThrow('auth.passwordResetExpiresIn', {
+      infer: true,
+    });
     this.frontendDomain = this.configService.getOrThrow('app.frontendDomain', { infer: true });
   }
 
@@ -210,11 +209,13 @@ export class AuthService {
     const resetLink = `${this.frontendDomain}/reset-password?token=${resetToken}`;
     const expiresInHours = Math.round(this.passwordResetExpiresIn / 3600);
 
-    this.emailService.sendPasswordResetEmail(user.email, {
-      name: user.first_name,
-      resetLink,
-      expiresIn: `${expiresInHours} hour${expiresInHours > 1 ? 's' : ''}`,
-    }).catch(console.error);
+    this.emailService
+      .sendPasswordResetEmail(user.email, {
+        name: user.first_name,
+        resetLink,
+        expiresIn: `${expiresInHours} hour${expiresInHours > 1 ? 's' : ''}`,
+      })
+      .catch(console.error);
 
     return { success: true, message: 'If the email exists, a reset link has been sent' };
   }

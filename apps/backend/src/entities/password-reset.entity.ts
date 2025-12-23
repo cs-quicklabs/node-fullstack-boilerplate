@@ -1,4 +1,12 @@
-import { BelongsTo, Column, DataType, ForeignKey, Index, IsUUID, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  Index,
+  IsUUID,
+  Table,
+} from 'sequelize-typescript';
 import { Sequelize } from 'sequelize';
 import { BaseEntity } from './base.entity';
 import { UserEntity } from './user.entity';
@@ -56,4 +64,3 @@ export class PasswordResetEntity extends BaseEntity {
     return new Date() > this.expires_at;
   }
 }
-

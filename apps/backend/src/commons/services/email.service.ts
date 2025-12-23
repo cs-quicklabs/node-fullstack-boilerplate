@@ -39,10 +39,7 @@ export class EmailService {
   /**
    * Send a welcome email
    */
-  async sendWelcomeEmail(
-    to: string,
-    data: { name: string },
-  ): Promise<MailResponse> {
+  async sendWelcomeEmail(to: string, data: { name: string }): Promise<MailResponse> {
     const html = this.renderTemplate('welcome', data);
     return this.mailerService.sendMail({
       to,

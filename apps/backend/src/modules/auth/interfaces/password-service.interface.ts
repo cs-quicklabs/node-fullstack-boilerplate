@@ -20,4 +20,3 @@ export interface IPasswordService {
 }
 
 export const PASSWORD_SERVICE = Symbol('IPasswordService');
-

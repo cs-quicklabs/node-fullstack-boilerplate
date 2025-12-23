@@ -7,4 +7,3 @@ export const ROLES_KEY = 'roles';
  * @param roles - Array of user type codes (e.g., 'ADMIN', 'USER', 'SUPER_ADMIN')
  */
 export const Roles = (...roles: string[]) => SetMetadata(ROLES_KEY, roles);
-

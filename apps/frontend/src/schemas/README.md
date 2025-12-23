@@ -64,19 +64,13 @@ z.string()
   .regex(/^[A-Z]/, 'Must start with uppercase')
   .optional()
   .nullable()
-  .default('default value')
+  .default('default value');
 ```
 
 ### Number Validation
 
 ```typescript
-z.number()
-  .min(0)
-  .max(100)
-  .int('Must be integer')
-  .positive()
-  .negative()
-  .finite()
+z.number().min(0).max(100).int('Must be integer').positive().negative().finite();
 ```
 
 ### Object Validation
@@ -89,7 +83,7 @@ z.object({
   .partial() // Make all fields optional
   .pick({ name: true }) // Only include name
   .omit({ age: true }) // Exclude age
-  .extend({ email: z.string() }) // Add field
+  .extend({ email: z.string() }); // Add field
 ```
 
 ### Array Validation
@@ -98,22 +92,19 @@ z.object({
 z.array(z.string())
   .min(1, 'At least one item required')
   .max(10, 'Too many items')
-  .nonempty('Array cannot be empty')
+  .nonempty('Array cannot be empty');
 ```
 
 ### Enum Validation
 
 ```typescript
-z.enum(['admin', 'user', 'guest'])
+z.enum(['admin', 'user', 'guest']);
 ```
 
 ### Custom Refinements
 
 ```typescript
-z.string().refine(
-  (val) => val.length >= 8,
-  { message: 'Password too short' }
-)
+z.string().refine((val) => val.length >= 8, { message: 'Password too short' });
 
 // With async validation
 z.string().refine(
@@ -121,8 +112,8 @@ z.string().refine(
     const exists = await checkEmailExists(email);
     return !exists;
   },
-  { message: 'Email already taken' }
-)
+  { message: 'Email already taken' },
+);
 ```
 
 ### Cross-field Validation
@@ -131,13 +122,10 @@ z.string().refine(
 z.object({
   password: z.string(),
   confirmPassword: z.string(),
-}).refine(
-  (data) => data.password === data.confirmPassword,
-  {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-  }
-)
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword'],
+});
 ```
 
 ## API Response Validation

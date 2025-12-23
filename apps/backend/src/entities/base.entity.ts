@@ -12,20 +12,20 @@ export abstract class BaseEntity extends Model<Record<string, unknown>> {
   declare id: number;
 
   @CreatedAt
-  @Column({ 
-    field: 'created_at', 
+  @Column({
+    field: 'created_at',
     type: DataType.DATE,
-    allowNull: false, 
-    defaultValue: Sequelize.literal('NOW()')
+    allowNull: false,
+    defaultValue: Sequelize.literal('NOW()'),
   })
   declare createdAt: Date;
 
   @UpdatedAt
-  @Column({ 
-    field: 'updated_at', 
+  @Column({
+    field: 'updated_at',
     type: DataType.DATE,
-    allowNull: false, 
-    defaultValue: Sequelize.literal('NOW()')
+    allowNull: false,
+    defaultValue: Sequelize.literal('NOW()'),
   })
   declare updatedAt: Date;
 

@@ -96,7 +96,7 @@ export class SmsService {
     // Create HTML preview file
     const htmlContent = this.generatePreviewHtml(previewData, messageId);
     const previewFilePath = path.join(this.previewLogPath, `${messageId}.html`);
-    
+
     fs.writeFileSync(previewFilePath, htmlContent);
 
     this.logger.log(`📱 SMS Preview saved: ${previewFilePath}`);

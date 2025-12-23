@@ -38,7 +38,7 @@ export class MailerService {
     try {
       // Create a test account on ethereal.email
       const testAccount = await nodemailer.createTestAccount();
-      
+
       this.transporter = nodemailer.createTransport({
         host: 'smtp.ethereal.email',
         port: 587,

@@ -10,12 +10,7 @@ import {
   Post,
   Headers,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import {
   RegisterDto,
@@ -74,11 +69,7 @@ export class AuthController {
     @Ip() ipAddress: string,
     @Headers('user-agent') userAgent: string,
   ) {
-    const result = await this.authService.refreshToken(
-      dto.refreshToken,
-      ipAddress,
-      userAgent,
-    );
+    const result = await this.authService.refreshToken(dto.refreshToken, ipAddress, userAgent);
     return new SuccessResponse('Token refreshed successfully', result);
   }
 

@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  ValidationError,
-  ValidationPipeOptions,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, ValidationError, ValidationPipeOptions } from '@nestjs/common';
 
 function generateErrors(errors: ValidationError[]): Record<string, string> {
   return errors.reduce(

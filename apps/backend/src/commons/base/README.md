@@ -88,10 +88,10 @@ export class ProductService extends BaseCrudService<
 > {
   // Required: specify the model
   protected readonly model = ProductEntity;
-  
+
   // Required: entity name for error messages
   protected readonly entityName = 'Product';
-  
+
   // Optional: customize defaults
   protected readonly defaultSortField = 'createdAt';
   protected readonly defaultSortOrder: 'ASC' | 'DESC' = 'DESC';
@@ -138,18 +138,12 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  async findAll(
-    @CurrentUser('organizationId') orgId: number,
-    @Query() pagination: PaginationDto,
-  ) {
+  async findAll(@CurrentUser('organizationId') orgId: number, @Query() pagination: PaginationDto) {
     return this.productService.findAllByOrganization(orgId, pagination);
   }
 
   @Get(':id')
-  async findOne(
-    @CurrentUser('organizationId') orgId: number,
-    @Param('id') id: number,
-  ) {
+  async findOne(@CurrentUser('organizationId') orgId: number, @Param('id') id: number) {
     return this.productService.findOneByOrganizationOrFail(id, orgId);
   }
 
@@ -174,34 +168,34 @@ export class ProductController {
 
 ### Basic CRUD
 
-| Method | Description |
-|--------|-------------|
-| `findAll(options)` | Get paginated list |
-| `findOne(id)` | Find by ID (returns null if not found) |
-| `findOneOrFail(id)` | Find by ID (throws if not found) |
-| `findByUuid(uuid)` | Find by UUID |
-| `findByUuidOrFail(uuid)` | Find by UUID (throws if not found) |
-| `create(dto)` | Create new record |
-| `update(id, dto)` | Update record |
-| `updateByUuid(uuid, dto)` | Update by UUID |
-| `delete(id)` | Hard delete |
-| `softDelete(id)` | Soft delete (sets deleted_at) |
-| `restore(id)` | Restore soft-deleted record |
+| Method                    | Description                            |
+| ------------------------- | -------------------------------------- |
+| `findAll(options)`        | Get paginated list                     |
+| `findOne(id)`             | Find by ID (returns null if not found) |
+| `findOneOrFail(id)`       | Find by ID (throws if not found)       |
+| `findByUuid(uuid)`        | Find by UUID                           |
+| `findByUuidOrFail(uuid)`  | Find by UUID (throws if not found)     |
+| `create(dto)`             | Create new record                      |
+| `update(id, dto)`         | Update record                          |
+| `updateByUuid(uuid, dto)` | Update by UUID                         |
+| `delete(id)`              | Hard delete                            |
+| `softDelete(id)`          | Soft delete (sets deleted_at)          |
+| `restore(id)`             | Restore soft-deleted record            |
 
 ### Utility Methods
 
-| Method | Description |
-|--------|-------------|
-| `count(where)` | Count records |
-| `exists(id)` | Check if ID exists |
+| Method               | Description          |
+| -------------------- | -------------------- |
+| `count(where)`       | Count records        |
+| `exists(id)`         | Check if ID exists   |
 | `existsByUuid(uuid)` | Check if UUID exists |
 
 ### Multi-Tenant Methods
 
-| Method | Description |
-|--------|-------------|
-| `findAllByOrganization(orgId, options)` | Get paginated list for organization |
-| `findOneByOrganization(id, orgId)` | Find by ID within organization |
+| Method                                   | Description                             |
+| ---------------------------------------- | --------------------------------------- |
+| `findAllByOrganization(orgId, options)`  | Get paginated list for organization     |
+| `findOneByOrganization(id, orgId)`       | Find by ID within organization          |
 | `findOneByOrganizationOrFail(id, orgId)` | Find by ID within organization (throws) |
 
 ## 📊 Pagination
@@ -210,11 +204,11 @@ export class ProductController {
 
 ```typescript
 class PaginationDto {
-  page?: number = 1;           // Page number (1-based)
-  limit?: number = 10;         // Items per page (max 100)
-  sortBy?: string;             // Field to sort by
-  sortOrder?: 'ASC' | 'DESC';  // Sort direction
-  search?: string;             // Search query (implement in service)
+  page?: number = 1; // Page number (1-based)
+  limit?: number = 10; // Items per page (max 100)
+  sortBy?: string; // Field to sort by
+  sortOrder?: 'ASC' | 'DESC'; // Sort direction
+  search?: string; // Search query (implement in service)
 }
 ```
 
@@ -222,14 +216,14 @@ class PaginationDto {
 
 ```typescript
 interface PaginatedResult<T> {
-  data: T[];                   // Array of items
+  data: T[]; // Array of items
   meta: {
-    total: number;             // Total items count
-    page: number;              // Current page
-    limit: number;             // Items per page
-    totalPages: number;        // Total pages
-    hasNextPage: boolean;      // Has next page
-    hasPrevPage: boolean;      // Has previous page
+    total: number; // Total items count
+    page: number; // Current page
+    limit: number; // Items per page
+    totalPages: number; // Total pages
+    hasNextPage: boolean; // Has next page
+    hasPrevPage: boolean; // Has previous page
   };
 }
 ```
@@ -242,7 +236,7 @@ interface PaginatedResult<T> {
 @Get()
 async findAll(@Query() pagination: PaginationDto) {
   const result = await this.productService.findAll(pagination);
-  
+
   // result = {
   //   data: [...products],
   //   meta: {
@@ -266,16 +260,16 @@ async findAll(@Query() pagination: PaginationDto) {
 export class ProductService extends BaseCrudService<...> {
   // Change default sort field
   protected readonly defaultSortField = 'name';
-  
+
   // Change default sort order
   protected readonly defaultSortOrder: 'ASC' | 'DESC' = 'ASC';
-  
+
   // Change default page size
   protected readonly defaultLimit = 25;
-  
+
   // Change maximum page size
   protected readonly maxLimit = 200;
-  
+
   // Change soft delete field name (default: 'deleted_at')
   protected readonly softDeleteField = 'deletedAt';
 }
@@ -286,7 +280,7 @@ export class ProductService extends BaseCrudService<...> {
 ```typescript
 @Injectable()
 export class ProductService extends BaseCrudService<...> {
-  
+
   // Add search functionality
   async search(query: string, orgId: number) {
     return this.findAll({
@@ -317,13 +311,13 @@ export class ProductService extends BaseCrudService<...> {
 
 ```typescript
 interface FindAllOptions {
-  page?: number;               // Page number
-  limit?: number;              // Items per page
-  sortBy?: string;             // Sort field
-  sortOrder?: 'ASC' | 'DESC';  // Sort direction
+  page?: number; // Page number
+  limit?: number; // Items per page
+  sortBy?: string; // Sort field
+  sortOrder?: 'ASC' | 'DESC'; // Sort direction
   where?: Record<string, any>; // Sequelize where clause
-  include?: any[];             // Sequelize includes
-  attributes?: string[];       // Fields to select
+  include?: any[]; // Sequelize includes
+  attributes?: string[]; // Fields to select
 }
 ```
 
@@ -354,4 +348,3 @@ const productNames = await this.productService.findAll({
 2. **Multi-Tenant**: Use `findAllByOrganization` and `findOneByOrganization` for tenant isolation
 3. **Override Methods**: Override `create` and `update` in your service for custom logic
 4. **Protected Model**: Access the model via `this.model` in your service
-

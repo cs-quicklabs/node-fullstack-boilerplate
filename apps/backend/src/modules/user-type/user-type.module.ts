@@ -11,4 +11,3 @@ import { UserTypeEntity } from '@src/entities';
   exports: [UserTypeService],
 })
 export class UserTypeModule {}
-

@@ -1,10 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import {
-  IsBoolean,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 import { validateConfig } from '@src/commons/utils';
 
 export interface MailerConfigType {

@@ -13,6 +13,7 @@ A production-ready monorepo boilerplate with NestJS backend, Next.js frontend, a
 ## ✨ Features
 
 ### Backend (NestJS)
+
 - 🔐 **JWT Authentication** with access/refresh tokens
 - 👥 **Role-Based Access Control** (RBAC)
 - 🏢 **Multi-Tenant Architecture** (organization-based)
@@ -24,11 +25,13 @@ A production-ready monorepo boilerplate with NestJS backend, Next.js frontend, a
 - 🔄 **Soft Delete** support
 
 ### Frontend (Next.js)
+
 - ⚡ **Next.js 16** with App Router
 - 🎨 **SCSS** support
 - 🧪 **Jest** testing
 
 ### Packages (Reusable)
+
 - 📧 `@boilerplate/mailer` - Email sending with Nodemailer
 - 📱 `@boilerplate/sms` - SMS sending with Twilio
 
@@ -95,11 +98,11 @@ npx nx run-many --target=serve --projects=backend,frontend
 
 ### Access Points
 
-| Service | URL |
-|---------|-----|
-| Backend API | http://localhost:3001/api |
+| Service      | URL                            |
+| ------------ | ------------------------------ |
+| Backend API  | http://localhost:3001/api      |
 | Swagger Docs | http://localhost:3001/api/docs |
-| Frontend | http://localhost:3000 |
+| Frontend     | http://localhost:3000          |
 
 ---
 
@@ -222,11 +225,11 @@ npx nx affected:graph
 
 ## 👥 User Roles
 
-| Role | Code | Access |
-|------|------|--------|
-| Super Admin | `SUPER_ADMIN` | All organizations, all resources |
-| Admin | `ADMIN` | Own organization, all resources |
-| User | `USER` | Own organization, limited resources |
+| Role        | Code          | Access                              |
+| ----------- | ------------- | ----------------------------------- |
+| Super Admin | `SUPER_ADMIN` | All organizations, all resources    |
+| Admin       | `ADMIN`       | Own organization, all resources     |
+| User        | `USER`        | Own organization, limited resources |
 
 ---
 
@@ -247,6 +250,7 @@ In development mode, emails and SMS are not sent. Instead:
 - **SMS**: Shows HTML preview in browser
 
 Set in `.env`:
+
 ```env
 MAIL_PREVIEW=true
 TWILIO_PREVIEW_MODE=true
@@ -256,19 +260,20 @@ TWILIO_PREVIEW_MODE=true
 
 ## 📚 Documentation
 
-| Topic | Location |
-|-------|----------|
-| Backend | [apps/backend/README.md](./apps/backend/README.md) |
-| Auth Module | [apps/backend/src/modules/auth/README.md](./apps/backend/src/modules/auth/README.md) |
-| Base CRUD | [apps/backend/src/commons/base/README.md](./apps/backend/src/commons/base/README.md) |
-| Mailer Package | [packages/mailer/README.md](./packages/mailer/README.md) |
-| SMS Package | [packages/sms/README.md](./packages/sms/README.md) |
+| Topic          | Location                                                                             |
+| -------------- | ------------------------------------------------------------------------------------ |
+| Backend        | [apps/backend/README.md](./apps/backend/README.md)                                   |
+| Auth Module    | [apps/backend/src/modules/auth/README.md](./apps/backend/src/modules/auth/README.md) |
+| Base CRUD      | [apps/backend/src/commons/base/README.md](./apps/backend/src/commons/base/README.md) |
+| Mailer Package | [packages/mailer/README.md](./packages/mailer/README.md)                             |
+| SMS Package    | [packages/sms/README.md](./packages/sms/README.md)                                   |
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Backend
+
 - [NestJS](https://nestjs.com/) - Node.js framework
 - [Sequelize](https://sequelize.org/) - ORM
 - [PostgreSQL](https://www.postgresql.org/) - Database
@@ -277,10 +282,12 @@ TWILIO_PREVIEW_MODE=true
 - [Twilio](https://www.twilio.com/) - SMS sending
 
 ### Frontend
+
 - [Next.js](https://nextjs.org/) - React framework
 - [SCSS](https://sass-lang.com/) - Styling
 
 ### Tooling
+
 - [Nx](https://nx.dev/) - Monorepo management
 - [Jest](https://jestjs.io/) - Testing
 - [Playwright](https://playwright.dev/) - E2E testing

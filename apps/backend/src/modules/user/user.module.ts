@@ -7,7 +7,7 @@ import { AuthModule } from '@src/modules/auth';
 
 /**
  * User Module
- * 
+ *
  * DIP: Imports AuthModule for PasswordService dependency
  */
 @Module({

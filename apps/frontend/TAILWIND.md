@@ -23,15 +23,15 @@ export function MyComponent() {
 ## Common Patterns
 
 ### Layout
+
 ```tsx
 <div className="container mx-auto px-4">
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    {/* Grid items */}
-  </div>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{/* Grid items */}</div>
 </div>
 ```
 
 ### Flexbox
+
 ```tsx
 <div className="flex items-center justify-between">
   <span>Left</span>
@@ -40,24 +40,21 @@ export function MyComponent() {
 ```
 
 ### Responsive Design
+
 ```tsx
-<div className="text-sm md:text-base lg:text-lg">
-  {/* Font size changes at breakpoints */}
-</div>
+<div className="text-sm md:text-base lg:text-lg">{/* Font size changes at breakpoints */}</div>
 ```
 
 ### Hover States
+
 ```tsx
-<button className="bg-blue-500 hover:bg-blue-600 transition-colors">
-  Hover me
-</button>
+<button className="bg-blue-500 hover:bg-blue-600 transition-colors">Hover me</button>
 ```
 
 ### Dark Mode (if enabled)
+
 ```tsx
-<div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-  Content
-</div>
+<div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">Content</div>
 ```
 
 ## Configuration
@@ -75,7 +72,7 @@ module.exports = {
         secondary: '#ffed4e',
       },
       spacing: {
-        '128': '32rem',
+        128: '32rem',
       },
       borderRadius: {
         '4xl': '2rem',
@@ -95,10 +92,7 @@ Then in `tailwind.config.js`:
 
 ```js
 module.exports = {
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 };
 ```
 
@@ -129,6 +123,7 @@ In your CSS files:
 ## Useful Tailwind Classes
 
 ### Spacing
+
 - `p-4` - padding 1rem
 - `px-4` - padding-left/right 1rem
 - `py-4` - padding-top/bottom 1rem
@@ -136,12 +131,14 @@ In your CSS files:
 - `space-x-4` - gap between children (horizontal)
 
 ### Typography
+
 - `text-sm/base/lg/xl/2xl/3xl` - font sizes
 - `font-normal/medium/semibold/bold` - font weights
 - `text-gray-500` - text color
 - `text-center/left/right` - text alignment
 
 ### Layout
+
 - `flex` - display flex
 - `grid` - display grid
 - `hidden` - display none
@@ -150,12 +147,14 @@ In your CSS files:
 - `h-screen` - height 100vh
 
 ### Borders & Shadows
+
 - `border` - 1px border
 - `border-2` - 2px border
 - `rounded` - border radius
 - `shadow-sm/md/lg/xl` - box shadow
 
 ### Colors
+
 - `bg-blue-500` - background color
 - `text-blue-500` - text color
 - `border-blue-500` - border color
@@ -169,6 +168,7 @@ In your CSS files:
 ## VS Code Extension
 
 Install "Tailwind CSS IntelliSense" for:
+
 - Autocomplete
 - Linting
 - Hover previews

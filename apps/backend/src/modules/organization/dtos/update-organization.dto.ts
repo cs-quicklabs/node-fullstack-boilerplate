@@ -1,10 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsEmail,
-  IsOptional,
-  IsString,
-  IsUrl,
-} from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class UpdateOrganizationDto {
   @ApiPropertyOptional({ example: 'Acme Corporation', description: 'Organization name' })
@@ -42,4 +37,3 @@ export class UpdateOrganizationDto {
   @IsOptional()
   description?: string;
 }
-

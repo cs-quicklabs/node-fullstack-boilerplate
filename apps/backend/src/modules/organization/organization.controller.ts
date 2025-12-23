@@ -10,13 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { OrganizationService } from './organization.service';
 import { CreateOrganizationDto, UpdateOrganizationDto } from './dtos';
 import { PaginationDto } from '@src/commons/base/dtos';
@@ -113,10 +107,7 @@ export class OrganizationController {
   @ApiOperation({ summary: 'Update organization (Super Admin only)' })
   @ApiResponse({ status: 200, description: 'Organization updated successfully' })
   @ApiResponse({ status: 404, description: 'Organization not found' })
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateOrganizationDto,
-  ) {
+  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateOrganizationDto) {
     const organization = await this.organizationService.update(id, dto);
     return new SuccessResponse('Organization updated successfully', organization);
   }
@@ -143,4 +134,3 @@ export class OrganizationController {
     return new SuccessResponse('Organization restored successfully', organization);
   }
 }
-

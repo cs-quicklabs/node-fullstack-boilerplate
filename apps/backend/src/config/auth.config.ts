@@ -1,10 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { validateConfig } from '@src/commons/utils';
 
 export interface AuthConfig {

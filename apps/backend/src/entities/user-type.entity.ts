@@ -1,5 +1,5 @@
-import { Column, DataType, Index, Table } from "sequelize-typescript";
-import { BaseEntity } from "./base.entity";
+import { Column, DataType, Index, Table } from 'sequelize-typescript';
+import { BaseEntity } from './base.entity';
 
 @Table({
   tableName: 'user_type',

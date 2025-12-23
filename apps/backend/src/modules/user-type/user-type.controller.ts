@@ -10,13 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { UserTypeService } from './user-type.service';
 import { CreateUserTypeDto, UpdateUserTypeDto } from './dtos';
 import { PaginationDto } from '@src/commons/base/dtos';
@@ -94,10 +88,7 @@ export class UserTypeController {
   @ApiOperation({ summary: 'Update user type (Super Admin only)' })
   @ApiResponse({ status: 200, description: 'User type updated successfully' })
   @ApiResponse({ status: 404, description: 'User type not found' })
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateUserTypeDto,
-  ) {
+  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateUserTypeDto) {
     const userType = await this.userTypeService.update(id, dto);
     return new SuccessResponse('User type updated successfully', userType);
   }
@@ -128,4 +119,3 @@ export class UserTypeController {
     );
   }
 }
-

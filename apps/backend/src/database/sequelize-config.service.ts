@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {
-  SequelizeModuleOptions,
-  SequelizeOptionsFactory,
-} from '@nestjs/sequelize';
+import { SequelizeModuleOptions, SequelizeOptionsFactory } from '@nestjs/sequelize';
 import { AllConfigType } from '@src/config/config.type';
 import { entities } from '@src/entities';
 
@@ -32,14 +29,12 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         min: 0,
       },
       dialectOptions:
-        databaseConfig.dialect === 'postgres' &&
-        !databaseConfig.host.includes('localhost')
+        databaseConfig.dialect === 'postgres' && !databaseConfig.host.includes('localhost')
           ? {
               ssl:
                 process.env.DATABASE_SSL_ENABLED === 'true'
                   ? {
-                      rejectUnauthorized:
-                        process.env.DATABASE_REJECT_UNAUTHORIZED === 'true',
+                      rejectUnauthorized: process.env.DATABASE_REJECT_UNAUTHORIZED === 'true',
                       ca: process.env.DATABASE_CA ?? undefined,
                       key: process.env.DATABASE_KEY ?? undefined,
                       cert: process.env.DATABASE_CERT ?? undefined,

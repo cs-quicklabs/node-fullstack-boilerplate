@@ -1,9 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { CurrentUser } from '../interfaces';
 
 /**
@@ -40,12 +35,9 @@ export class OrganizationGuard implements CanActivate {
 
     // Check if user belongs to the requested organization
     if (user.organizationId !== orgIdNumber) {
-      throw new ForbiddenException(
-        'You do not have access to this organization\'s resources',
-      );
+      throw new ForbiddenException("You do not have access to this organization's resources");
     }
 
     return true;
   }
 }
-

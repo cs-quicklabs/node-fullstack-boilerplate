@@ -10,19 +10,21 @@ A production-ready NestJS backend boilerplate with authentication, authorization
   - Role-based access control (RBAC)
   - Email verification with link and 6-digit code
   - Password reset flow
-  
 - **Multi-Tenant Architecture**
+
   - Organization-based data isolation
   - Users belong to organizations
   - Guards to prevent cross-organization data access
 
 - **Database**
+
   - PostgreSQL with Sequelize ORM
   - Soft delete support
   - Base entity with timestamps
   - Migrations support
 
 - **API Features**
+
   - Swagger/OpenAPI documentation
   - API versioning (URI-based)
   - Request validation with class-validator
@@ -155,22 +157,22 @@ npx nx serve backend --configuration=prod
 
 ### Endpoints
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/v1/auth/register` | Register new user | No |
-| POST | `/api/v1/auth/login` | Login | No |
-| POST | `/api/v1/auth/refresh-token` | Refresh access token | No |
-| POST | `/api/v1/auth/logout` | Logout current session | Yes |
-| POST | `/api/v1/auth/logout-all` | Logout all sessions | Yes |
-| POST | `/api/v1/auth/forgot-password` | Request password reset | No |
-| POST | `/api/v1/auth/reset-password` | Reset password | No |
-| POST | `/api/v1/auth/change-password` | Change password | Yes |
-| POST | `/api/v1/auth/verify-email` | Verify email (token) | No |
-| POST | `/api/v1/auth/verify-email/code` | Verify email (code) | Yes |
-| POST | `/api/v1/auth/resend-verification` | Resend verification | Yes |
-| GET | `/api/v1/auth/sessions` | Get active sessions | Yes |
-| DELETE | `/api/v1/auth/sessions/:id` | Revoke a session | Yes |
-| GET | `/api/v1/auth/me` | Get current user | Yes |
+| Method | Endpoint                           | Description            | Auth Required |
+| ------ | ---------------------------------- | ---------------------- | ------------- |
+| POST   | `/api/v1/auth/register`            | Register new user      | No            |
+| POST   | `/api/v1/auth/login`               | Login                  | No            |
+| POST   | `/api/v1/auth/refresh-token`       | Refresh access token   | No            |
+| POST   | `/api/v1/auth/logout`              | Logout current session | Yes           |
+| POST   | `/api/v1/auth/logout-all`          | Logout all sessions    | Yes           |
+| POST   | `/api/v1/auth/forgot-password`     | Request password reset | No            |
+| POST   | `/api/v1/auth/reset-password`      | Reset password         | No            |
+| POST   | `/api/v1/auth/change-password`     | Change password        | Yes           |
+| POST   | `/api/v1/auth/verify-email`        | Verify email (token)   | No            |
+| POST   | `/api/v1/auth/verify-email/code`   | Verify email (code)    | Yes           |
+| POST   | `/api/v1/auth/resend-verification` | Resend verification    | Yes           |
+| GET    | `/api/v1/auth/sessions`            | Get active sessions    | Yes           |
+| DELETE | `/api/v1/auth/sessions/:id`        | Revoke a session       | Yes           |
+| GET    | `/api/v1/auth/me`                  | Get current user       | Yes           |
 
 ### Using Authentication
 
@@ -186,11 +188,11 @@ Authorization: Bearer <access_token>
 
 The system has three default user types:
 
-| Code | Name | Description |
-|------|------|-------------|
-| `SUPER_ADMIN` | Super Administrator | Full access to all organizations |
-| `ADMIN` | Administrator | Full access to their organization |
-| `USER` | Standard User | Basic access |
+| Code          | Name                | Description                       |
+| ------------- | ------------------- | --------------------------------- |
+| `SUPER_ADMIN` | Super Administrator | Full access to all organizations  |
+| `ADMIN`       | Administrator       | Full access to their organization |
+| `USER`        | Standard User       | Basic access                      |
 
 ### Using Role-Based Access
 
@@ -261,7 +263,7 @@ export class MyService {
   async sendWelcome(email: string, name: string) {
     await this.emailService.sendWelcomeEmail(email, {
       name,
-      verificationLink: 'https://...'
+      verificationLink: 'https://...',
     });
   }
 
@@ -270,8 +272,8 @@ export class MyService {
     await this.emailService.sendTemplatedEmail(
       email,
       'Subject',
-      'my-template',  // templates/my-template.hbs
-      { data: 'value' }
+      'my-template', // templates/my-template.hbs
+      { data: 'value' },
     );
   }
 }
@@ -297,7 +299,7 @@ export class MyService {
   async sendOtp(phone: string, code: string) {
     await this.smsService.sendSms({
       to: phone,
-      body: `Your code is: ${code}`
+      body: `Your code is: ${code}`,
     });
   }
 }
@@ -332,19 +334,19 @@ export class MyService extends BaseCrudService<MyEntity, CreateDto, UpdateDto> {
 
 ### Available Methods
 
-| Method | Description |
-|--------|-------------|
-| `findAll(options)` | Paginated list with sorting |
-| `findOne(id)` | Find by ID |
-| `findByUuid(uuid)` | Find by UUID |
-| `create(dto)` | Create new record |
-| `update(id, dto)` | Update record |
-| `softDelete(id)` | Soft delete |
-| `restore(id)` | Restore soft-deleted |
-| `count(where)` | Count records |
-| `exists(id)` | Check if exists |
-| `findAllByOrganization(orgId)` | Multi-tenant find all |
-| `findOneByOrganization(id, orgId)` | Multi-tenant find one |
+| Method                             | Description                 |
+| ---------------------------------- | --------------------------- |
+| `findAll(options)`                 | Paginated list with sorting |
+| `findOne(id)`                      | Find by ID                  |
+| `findByUuid(uuid)`                 | Find by UUID                |
+| `create(dto)`                      | Create new record           |
+| `update(id, dto)`                  | Update record               |
+| `softDelete(id)`                   | Soft delete                 |
+| `restore(id)`                      | Restore soft-deleted        |
+| `count(where)`                     | Count records               |
+| `exists(id)`                       | Check if exists             |
+| `findAllByOrganization(orgId)`     | Multi-tenant find all       |
+| `findOneByOrganization(id, orgId)` | Multi-tenant find one       |
 
 ---
 
@@ -410,6 +412,7 @@ npx nx e2e backend-e2e
 ## 📝 Creating a New Module
 
 1. Create the module folder:
+
 ```bash
 mkdir -p src/modules/my-module/dtos
 ```
@@ -479,4 +482,3 @@ CMD ["node", "main.js"]
 ## 📄 License
 
 MIT
-

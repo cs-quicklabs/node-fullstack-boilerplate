@@ -22,8 +22,8 @@ export const useMyStore = create<MyState>()(
       data: '',
       setData: (data) => set({ data }),
     }),
-    { name: 'MyStore' }
-  )
+    { name: 'MyStore' },
+  ),
 );
 ```
 
@@ -51,6 +51,7 @@ export function MyComponent() {
 ### DevTools Integration
 
 The `devtools` middleware enables Redux DevTools support for debugging:
+
 - Time-travel debugging
 - State inspection
 - Action tracking
@@ -65,11 +66,13 @@ import { persist } from 'zustand/middleware';
 export const useStore = create()(
   devtools(
     persist(
-      (set) => ({ /* ... */ }),
-      { name: 'my-storage-key' }
+      (set) => ({
+        /* ... */
+      }),
+      { name: 'my-storage-key' },
     ),
-    { name: 'MyStore' }
-  )
+    { name: 'MyStore' },
+  ),
 );
 ```
 
@@ -103,7 +106,7 @@ fetchData: async () => {
   } catch (error) {
     set({ error, isLoading: false });
   }
-}
+};
 ```
 
 ## Best Practices
@@ -117,6 +120,7 @@ fetchData: async () => {
 ## Examples
 
 See `example.store.ts` for complete examples of:
+
 - Simple counter store
 - Async data fetching
 - Persisted settings

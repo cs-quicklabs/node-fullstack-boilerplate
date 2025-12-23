@@ -7,7 +7,7 @@ import { CreateUserTypeDto, UpdateUserTypeDto } from './dtos';
 
 /**
  * User Type Service
- * 
+ *
  * SRP: Manages user types/roles
  * Note: Does not extend BaseCrudService as user types have different behavior
  * (no soft delete, system code protection)
@@ -23,13 +23,7 @@ export class UserTypeService {
   ) {}
 
   async findAll(options: FindAllOptions = {}): Promise<PaginatedResult<UserTypeEntity>> {
-    const {
-      page = 1,
-      limit = 10,
-      sortBy = 'createdAt',
-      sortOrder = 'DESC',
-      where = {},
-    } = options;
+    const { page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'DESC', where = {} } = options;
 
     const safeLimit = Math.min(Math.max(1, limit), 100);
     const safePage = Math.max(1, page);
@@ -158,7 +152,7 @@ export class UserTypeService {
   }
 
   private isSystemCode(code: string): boolean {
-    return this.systemCodes.includes(code as typeof this.systemCodes[number]);
+    return this.systemCodes.includes(code as (typeof this.systemCodes)[number]);
   }
 
   private validateNotSystemCode(code: string, message: string): void {

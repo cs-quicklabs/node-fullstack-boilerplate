@@ -5,7 +5,7 @@ import { ISessionService, CreateSessionInput } from '../interfaces';
 
 /**
  * Session Service Implementation
- * 
+ *
  * SRP: Handles all session-related operations:
  * - Creating sessions
  * - Validating sessions
@@ -63,7 +63,7 @@ export class SessionService implements ISessionService {
     const session = await this.sessionModel.findOne({
       where: { hash: sessionHash },
     });
-    
+
     if (session) {
       await session.update({
         is_active: false,
@@ -86,7 +86,15 @@ export class SessionService implements ISessionService {
         is_active: true,
         revoked_at: null,
       },
-      attributes: ['id', 'hash', 'ip_address', 'user_agent', 'device_type', 'last_activity_at', 'createdAt'],
+      attributes: [
+        'id',
+        'hash',
+        'ip_address',
+        'user_agent',
+        'device_type',
+        'last_activity_at',
+        'createdAt',
+      ],
       order: [['last_activity_at', 'DESC']],
     });
   }
@@ -104,4 +112,3 @@ export class SessionService implements ISessionService {
     return true;
   }
 }
-

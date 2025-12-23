@@ -1,12 +1,11 @@
-import { Column, DataType, IsUUID, Table } from "sequelize-typescript";
-import { BaseEntity } from "./base.entity";
-import { Sequelize } from "sequelize";
+import { Column, DataType, IsUUID, Table } from 'sequelize-typescript';
+import { BaseEntity } from './base.entity';
+import { Sequelize } from 'sequelize';
 
 @Table({
   tableName: 'organization',
 })
 export class OrganizationEntity extends BaseEntity {
-
   @IsUUID(4)
   @Column({
     type: DataType.UUID,
