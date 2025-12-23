@@ -8,13 +8,13 @@ import { UserEntity } from './user.entity';
 })
 export class SessionEntity extends BaseEntity {
   @IsUUID(4)
-  @Index({ name: 'IDX_SESSION_UUID', unique: true })
+  @Index({ name: 'IDX_SESSION_HASH', unique: true })
   @Column({
     type: DataType.UUID,
     allowNull: false,
     defaultValue: Sequelize.literal('gen_random_uuid()'),
   })
-  declare uuid: string;
+  declare hash: string;
 
   @ForeignKey(() => UserEntity)
   @Index({ name: 'IDX_SESSION_USER_ID' })
@@ -27,31 +27,11 @@ export class SessionEntity extends BaseEntity {
   @BelongsTo(() => UserEntity)
   declare user: UserEntity;
 
-  @Index({ name: 'IDX_SESSION_ACCESS_TOKEN' })
-  @Column({
-    type: DataType.TEXT,
-    allowNull: false,
-  })
-  declare access_token: string;
-
-  @Index({ name: 'IDX_SESSION_REFRESH_TOKEN' })
-  @Column({
-    type: DataType.TEXT,
-    allowNull: false,
-  })
-  declare refresh_token: string;
-
   @Column({
     type: DataType.DATE,
     allowNull: false,
   })
-  declare access_token_expires_at: Date;
-
-  @Column({
-    type: DataType.DATE,
-    allowNull: false,
-  })
-  declare refresh_token_expires_at: Date;
+  declare expires_at: Date;
 
   @Column({
     type: DataType.STRING,
@@ -90,14 +70,13 @@ export class SessionEntity extends BaseEntity {
   })
   declare revoked_at: Date | null;
 
-  // Helper method to check if access token is expired
-  get isAccessTokenExpired(): boolean {
-    return new Date() > this.access_token_expires_at;
+  // Helper method to check if session is expired
+  get isExpired(): boolean {
+    return new Date() > this.expires_at;
   }
 
-  // Helper method to check if refresh token is expired
-  get isRefreshTokenExpired(): boolean {
-    return new Date() > this.refresh_token_expires_at;
+  // Helper method to check if session is valid
+  get isValid(): boolean {
+    return this.is_active && !this.revoked_at && !this.isExpired;
   }
 }
-

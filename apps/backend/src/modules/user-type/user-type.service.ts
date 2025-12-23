@@ -1,34 +1,25 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import { FindAllOptions, PaginatedResult } from '@src/commons/base';
 import { UserTypeEntity } from '@src/entities';
 import { CreateUserTypeDto, UpdateUserTypeDto } from './dtos';
 
-export interface PaginatedResult<T> {
-  data: T[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasNextPage: boolean;
-    hasPrevPage: boolean;
-  };
-}
-
-export interface FindAllOptions {
-  page?: number;
-  limit?: number;
-  sortBy?: string;
-  sortOrder?: 'ASC' | 'DESC';
-  where?: Record<string, unknown>;
-}
-
+/**
+ * User Type Service
+ * 
+ * SRP: Manages user types/roles
+ * Note: Does not extend BaseCrudService as user types have different behavior
+ * (no soft delete, system code protection)
+ */
 @Injectable()
 export class UserTypeService {
+  // System codes that cannot be deleted or deactivated
+  private readonly systemCodes = ['SUPER_ADMIN', 'ADMIN', 'USER'] as const;
+
   constructor(
     @InjectModel(UserTypeEntity)
-    private userTypeModel: typeof UserTypeEntity,
+    private readonly userTypeModel: typeof UserTypeEntity,
   ) {}
 
   async findAll(options: FindAllOptions = {}): Promise<PaginatedResult<UserTypeEntity>> {
@@ -45,9 +36,7 @@ export class UserTypeService {
     const offset = (safePage - 1) * safeLimit;
 
     const { count, rows } = await this.userTypeModel.findAndCountAll({
-      where: {
-        ...where,
-      },
+      where,
       order: [[sortBy, sortOrder]],
       limit: safeLimit,
       offset,
@@ -86,7 +75,7 @@ export class UserTypeService {
   }
 
   async create(dto: CreateUserTypeDto): Promise<UserTypeEntity> {
-    // Check if code already exists
+    // Check for duplicate code
     const existingUserType = await this.userTypeModel.findOne({
       where: { code: dto.code.toUpperCase() },
     });
@@ -95,22 +84,16 @@ export class UserTypeService {
       throw new ConflictException(`User type with code "${dto.code}" already exists`);
     }
 
-    const userType = await this.userTypeModel.create({
+    return this.userTypeModel.create({
       name: dto.name,
       code: dto.code.toUpperCase(),
       description: dto.description || null,
-      is_active: dto.isActive !== undefined ? dto.isActive : true,
+      is_active: dto.isActive ?? true,
     });
-
-    return userType;
   }
 
   async update(id: number, dto: UpdateUserTypeDto): Promise<UserTypeEntity> {
-    const userType = await this.userTypeModel.findByPk(id);
-
-    if (!userType) {
-      throw new NotFoundException('User type not found');
-    }
+    const userType = await this.requireById(id);
 
     const updateData: Partial<UserTypeEntity> = {};
 
@@ -119,43 +102,27 @@ export class UserTypeService {
     if (dto.isActive !== undefined) updateData.is_active = dto.isActive;
 
     await userType.update(updateData);
-
     return userType;
   }
 
   async delete(id: number): Promise<boolean> {
-    const userType = await this.userTypeModel.findByPk(id);
+    const userType = await this.requireById(id);
 
-    if (!userType) {
-      throw new NotFoundException('User type not found');
-    }
-
-    // Don't allow deleting system user types
-    const systemCodes = ['SUPER_ADMIN', 'ADMIN', 'USER'];
-    if (systemCodes.includes(userType.code)) {
-      throw new ConflictException('Cannot delete system user types');
-    }
+    this.validateNotSystemCode(userType.code, 'Cannot delete system user types');
 
     await userType.destroy();
-
     return true;
   }
 
   async toggleActive(id: number): Promise<UserTypeEntity> {
-    const userType = await this.userTypeModel.findByPk(id);
+    const userType = await this.requireById(id);
 
-    if (!userType) {
-      throw new NotFoundException('User type not found');
-    }
-
-    // Don't allow deactivating system user types
-    const systemCodes = ['SUPER_ADMIN', 'ADMIN', 'USER'];
-    if (systemCodes.includes(userType.code) && userType.is_active) {
+    // Can't deactivate system types that are currently active
+    if (this.isSystemCode(userType.code) && userType.is_active) {
       throw new ConflictException('Cannot deactivate system user types');
     }
 
     await userType.update({ is_active: !userType.is_active });
-
     return userType;
   }
 
@@ -179,5 +146,24 @@ export class UserTypeService {
       },
     });
   }
-}
 
+  // Private helper methods
+
+  private async requireById(id: number): Promise<UserTypeEntity> {
+    const userType = await this.userTypeModel.findByPk(id);
+    if (!userType) {
+      throw new NotFoundException('User type not found');
+    }
+    return userType;
+  }
+
+  private isSystemCode(code: string): boolean {
+    return this.systemCodes.includes(code as typeof this.systemCodes[number]);
+  }
+
+  private validateNotSystemCode(code: string, message: string): void {
+    if (this.isSystemCode(code)) {
+      throw new ConflictException(message);
+    }
+  }
+}

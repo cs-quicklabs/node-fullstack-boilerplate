@@ -21,7 +21,7 @@ import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dtos';
 import { PaginationDto } from '@src/commons/base/dtos';
 import { SuccessResponse } from '@src/commons/dtos';
-import { CurrentUser, Roles, Public } from '@src/modules/auth/decorators';
+import { CurrentUser, Roles } from '@src/modules/auth/decorators';
 import { RolesGuard, OrganizationGuard } from '@src/modules/auth/guards';
 import { CurrentUser as CurrentUserType } from '@src/modules/auth/interfaces';
 

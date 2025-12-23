@@ -12,7 +12,7 @@ import { SmsModule } from '@boilerplate/sms';
 import { EmailService } from '@src/commons/services';
 
 // Modules
-import { AuthModule, JwtAuthGuard } from './modules/auth';
+import { AuthModule, JwtAuthGuard, TokenService, SessionService } from './modules/auth';
 import { UserModule } from './modules/user';
 import { OrganizationModule } from './modules/organization';
 import { UserTypeModule } from './modules/user-type';
@@ -21,6 +21,12 @@ import { UserTypeModule } from './modules/user-type';
 import { SequelizeModule as SequelizeFeatureModule } from '@nestjs/sequelize';
 import { SessionEntity, UserEntity } from './entities';
 
+/**
+ * Application Root Module
+ * 
+ * DIP: Uses abstractions via module imports
+ * SRP: Configuration and wiring only
+ */
 @Module({
   imports: [
     // Configuration
@@ -81,6 +87,9 @@ import { SessionEntity, UserEntity } from './entities';
   controllers: [AppController],
   providers: [
     EmailService,
+    // Services needed by global guard
+    TokenService,
+    SessionService,
     // Global JWT Auth Guard - protects all routes by default
     {
       provide: APP_GUARD,

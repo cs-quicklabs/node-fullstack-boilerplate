@@ -6,8 +6,6 @@ import { SuccessResponse } from '@src/commons/dtos';
 @ApiTags('App')
 @Controller()
 export class AppController {
-  constructor() { }
-
   @Public()
   @Get('health')
   @ApiOperation({ summary: 'Health check endpoint' })

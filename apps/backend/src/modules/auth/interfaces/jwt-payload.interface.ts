@@ -4,7 +4,7 @@ export interface JwtPayload {
   email: string;
   organizationId: number;
   userTypeCode: string;
-  sessionId: number;
+  sessionHash: string; // session hash for validation
   type: 'access' | 'refresh';
   iat?: number;
   exp?: number;
@@ -26,6 +26,5 @@ export interface CurrentUser {
   organizationId: number;
   userTypeId: number;
   userTypeCode: string;
-  sessionId: number;
+  sessionHash: string;
 }
-

@@ -7,7 +7,6 @@ import {
   HttpStatus,
   Ip,
   Param,
-  ParseIntPipe,
   Post,
   Headers,
 } from '@nestjs/common';
@@ -27,7 +26,7 @@ import {
   ChangePasswordDto,
 } from './dtos';
 import { Public, CurrentUser } from './decorators';
-import { CurrentUser as CurrentUserType } from './interfaces';
+import * as AuthInterfaces from './interfaces';
 import { SuccessResponse } from '@src/commons/dtos';
 
 @ApiTags('Authentication')
@@ -88,8 +87,8 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Logout current session' })
   @ApiResponse({ status: 200, description: 'Logged out successfully' })
-  async logout(@CurrentUser() user: CurrentUserType) {
-    const result = await this.authService.logout(user.sessionId);
+  async logout(@CurrentUser() user: AuthInterfaces.CurrentUser) {
+    const result = await this.authService.logout(user.sessionHash);
     return new SuccessResponse('Logged out successfully', result);
   }
 
@@ -98,7 +97,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Logout all sessions' })
   @ApiResponse({ status: 200, description: 'All sessions logged out' })
-  async logoutAll(@CurrentUser() user: CurrentUserType) {
+  async logoutAll(@CurrentUser() user: AuthInterfaces.CurrentUser) {
     const result = await this.authService.logoutAll(user.id);
     return new SuccessResponse('All sessions logged out successfully', result);
   }
@@ -131,7 +130,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Password changed successfully' })
   @ApiResponse({ status: 401, description: 'Current password is incorrect' })
   async changePassword(
-    @CurrentUser() user: CurrentUserType,
+    @CurrentUser() user: AuthInterfaces.CurrentUser,
     @Body() dto: ChangePasswordDto,
   ) {
     const result = await this.authService.changePassword(user.id, dto);
@@ -142,21 +141,21 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all active sessions' })
   @ApiResponse({ status: 200, description: 'Active sessions list' })
-  async getSessions(@CurrentUser() user: CurrentUserType) {
+  async getSessions(@CurrentUser() user: AuthInterfaces.CurrentUser) {
     const sessions = await this.authService.getActiveSessions(user.id);
     return new SuccessResponse('Active sessions retrieved', sessions);
   }
 
-  @Delete('sessions/:sessionId')
+  @Delete('sessions/:sessionHash')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Revoke a specific session' })
+  @ApiOperation({ summary: 'Revoke a specific session by hash' })
   @ApiResponse({ status: 200, description: 'Session revoked' })
   @ApiResponse({ status: 404, description: 'Session not found' })
   async revokeSession(
-    @CurrentUser() user: CurrentUserType,
-    @Param('sessionId', ParseIntPipe) sessionId: number,
+    @CurrentUser() user: AuthInterfaces.CurrentUser,
+    @Param('sessionHash') sessionHash: string,
   ) {
-    const result = await this.authService.revokeSession(user.id, sessionId);
+    const result = await this.authService.revokeSession(user.id, sessionHash);
     return new SuccessResponse(result.message, result);
   }
 
@@ -164,7 +163,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get current user info' })
   @ApiResponse({ status: 200, description: 'Current user information' })
-  async getCurrentUser(@CurrentUser() user: CurrentUserType) {
+  async getCurrentUser(@CurrentUser() user: AuthInterfaces.CurrentUser) {
     return new SuccessResponse('User information retrieved', user);
   }
 }

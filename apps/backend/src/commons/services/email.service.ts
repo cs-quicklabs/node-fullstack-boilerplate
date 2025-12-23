@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { MailerService, MailResponse } from '@boilerplate/mailer';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -6,7 +6,6 @@ import * as Handlebars from 'handlebars';
 
 @Injectable()
 export class EmailService {
-  private readonly logger = new Logger(EmailService.name);
   private templates: Map<string, Handlebars.TemplateDelegate> = new Map();
   private templatesDir: string;
 
