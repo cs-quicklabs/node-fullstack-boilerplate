@@ -58,19 +58,19 @@
       "serve": {
         "executor": "nx:run-commands",
         "defaultConfiguration": "dev",
-        "dependsOn": [
-          "build"
-        ],
         "options": {
           "command": "node dist/main.js",
           "cwd": "apps/backend"
         },
         "configurations": {
           "dev": {
-            "command": "node dist/main.js",
+            "command": "nest start --watch",
             "cwd": "apps/backend"
           },
           "prod": {
+            "dependsOn": [
+              "build"
+            ],
             "command": "node dist/main.js",
             "cwd": "apps/backend"
           }
@@ -84,16 +84,21 @@
     }
   },
   "dependencies": {
+    "@boilerplate/mailer": "*",
+    "@boilerplate/sms": "*",
     "@nestjs/common": "^11.0.0",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
     "@nestjs/sequelize": "^11.0.1",
     "@nestjs/swagger": "^11.2.3",
+    "bcrypt": "^5.1.1",
+    "handlebars": "^4.7.8",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "cookie-parser": "^1.4.7",
     "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.1.13",
@@ -103,9 +108,14 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@nestjs/cli": "^11.0.14",
     "@nestjs/testing": "^11.0.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.10",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/morgan": "^1.9.10",
-    "@types/sequelize": "^4.28.20"
+    "@types/sequelize": "^4.28.20",
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.11"
   }
 }

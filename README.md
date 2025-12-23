@@ -1,104 +1,343 @@
-# New Nx Repository
+# Full-Stack Boilerplate - NestJS + Next.js
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+<p align="center">
+  <a href="https://nestjs.com/" target="_blank"><img src="https://nestjs.com/img/logo-small.svg" width="60" alt="NestJS" /></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://nextjs.org/" target="_blank"><img src="https://assets.vercel.com/image/upload/v1662130559/nextjs/Icon_dark_background.png" width="60" alt="Next.js" /></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://nx.dev" target="_blank"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="60" alt="Nx" /></a>
+</p>
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+A production-ready monorepo boilerplate with NestJS backend, Next.js frontend, and reusable packages.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## ✨ Features
 
-## Generate a library
+### Backend (NestJS)
+- 🔐 **JWT Authentication** with access/refresh tokens
+- 👥 **Role-Based Access Control** (RBAC)
+- 🏢 **Multi-Tenant Architecture** (organization-based)
+- 📧 **Email Service** with dev preview mode
+- 📱 **SMS Service** (Twilio) with dev preview mode
+- 🗄️ **PostgreSQL** with Sequelize ORM
+- 📚 **Swagger/OpenAPI** documentation
+- ✅ **Validation** with class-validator
+- 🔄 **Soft Delete** support
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+### Frontend (Next.js)
+- ⚡ **Next.js 16** with App Router
+- 🎨 **SCSS** support
+- 🧪 **Jest** testing
+
+### Packages (Reusable)
+- 📧 `@boilerplate/mailer` - Email sending with Nodemailer
+- 📱 `@boilerplate/sms` - SMS sending with Twilio
+
+---
+
+## 📁 Project Structure
+
+```
+├── apps/
+│   ├── backend/              # NestJS API server
+│   ├── backend-e2e/          # Backend E2E tests
+│   ├── frontend/             # Next.js web app
+│   └── frontend-e2e/         # Frontend E2E tests (Playwright)
+│
+├── packages/
+│   ├── mailer/               # @boilerplate/mailer
+│   └── sms/                  # @boilerplate/sms
+│
+├── nx.json                   # Nx configuration
+├── package.json              # Root dependencies
+└── tsconfig.base.json        # Base TypeScript config
 ```
 
-## Run tasks
+---
 
-To build the library use:
+## 🚀 Quick Start
 
-```sh
-npx nx build pkg1
+### Prerequisites
+
+- **Node.js** 18+
+- **PostgreSQL** 14+
+- **npm** or **yarn**
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd boilerplate-nest-next
+
+# Install dependencies
+npm install
+
+# Setup environment
+cp apps/backend/env-example.txt apps/backend/.env
+# Edit .env with your configuration
+
+# Create database
+createdb boilerplate_db
 ```
 
-To run any task with Nx use:
+### Running the Applications
 
-```sh
-npx nx <target> <project-name>
+```bash
+# Start backend (development)
+npx nx serve backend
+
+# Start frontend (development)
+npx nx dev frontend
+
+# Start both
+npx nx run-many --target=serve --projects=backend,frontend
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### Access Points
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+| Service | URL |
+|---------|-----|
+| Backend API | http://localhost:3001/api |
+| Swagger Docs | http://localhost:3001/api/docs |
+| Frontend | http://localhost:3000 |
 
-## Versioning and releasing
+---
 
-To version and release the library use
+## 📦 Packages
 
-```
-npx nx release
-```
+### @boilerplate/mailer
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+Lightweight email service with Nodemailer.
 
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```typescript
+import { MailerService } from '@boilerplate/mailer';
 
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
-```
-
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
-
-```sh
-npx nx sync:check
+await mailerService.sendMail({
+  to: 'user@example.com',
+  subject: 'Hello',
+  html: '<h1>Welcome!</h1>',
+});
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+[📖 Full Documentation](./packages/mailer/README.md)
 
-## Nx Cloud
+### @boilerplate/sms
 
-Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+SMS service with Twilio integration.
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```typescript
+import { SmsService } from '@boilerplate/sms';
 
-### Set up CI (non-Github Actions CI)
-
-**Note:** This is only required if your CI provider is not GitHub Actions.
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+await smsService.sendSms({
+  to: '+1234567890',
+  body: 'Your code is: 123456',
+});
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+[📖 Full Documentation](./packages/sms/README.md)
 
-## Install Nx Console
+---
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## 🔧 Available Commands
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Development
 
-## Useful links
+```bash
+# Serve applications
+npx nx serve backend           # Start backend
+npx nx dev frontend            # Start frontend
 
-Learn more:
+# Build applications
+npx nx build backend           # Build backend
+npx nx build frontend          # Build frontend
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+# Run all builds
+npx nx run-many --target=build --all
+```
 
-And join the Nx community:
+### Testing
 
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+# Unit tests
+npx nx test backend
+npx nx test frontend
+
+# E2E tests
+npx nx e2e backend-e2e
+npx nx e2e frontend-e2e
+```
+
+### Code Quality
+
+```bash
+# Lint
+npx nx lint backend
+npx nx lint frontend
+
+# Type checking
+npx nx typecheck backend
+npx nx typecheck frontend
+```
+
+### Utilities
+
+```bash
+# View project graph
+npx nx graph
+
+# List all projects
+npx nx show projects
+
+# See affected projects
+npx nx affected:graph
+```
+
+---
+
+## 🔐 Authentication Flow
+
+```
+┌──────────┐     ┌──────────┐     ┌──────────┐
+│  Client  │     │  Backend │     │    DB    │
+└────┬─────┘     └────┬─────┘     └────┬─────┘
+     │                │                │
+     │  POST /login   │                │
+     │───────────────>│                │
+     │                │  Store Session │
+     │                │───────────────>│
+     │  Access Token  │                │
+     │  Refresh Token │                │
+     │<───────────────│                │
+     │                │                │
+     │  API Request   │                │
+     │  (Bearer Token)│                │
+     │───────────────>│                │
+     │                │  Validate      │
+     │                │───────────────>│
+     │     200 OK     │                │
+     │<───────────────│                │
+```
+
+---
+
+## 👥 User Roles
+
+| Role | Code | Access |
+|------|------|--------|
+| Super Admin | `SUPER_ADMIN` | All organizations, all resources |
+| Admin | `ADMIN` | Own organization, all resources |
+| User | `USER` | Own organization, limited resources |
+
+---
+
+## 🏢 Multi-Tenant Architecture
+
+- Each user belongs to an **Organization**
+- Data is isolated by `organization_id`
+- Guards prevent cross-organization access
+- Super Admins can access all organizations
+
+---
+
+## 📧 Email & SMS Dev Preview
+
+In development mode, emails and SMS are not sent. Instead:
+
+- **Email**: Opens in browser via Ethereal Email
+- **SMS**: Shows HTML preview in browser
+
+Set in `.env`:
+```env
+MAIL_PREVIEW=true
+TWILIO_PREVIEW_MODE=true
+```
+
+---
+
+## 📚 Documentation
+
+| Topic | Location |
+|-------|----------|
+| Backend | [apps/backend/README.md](./apps/backend/README.md) |
+| Auth Module | [apps/backend/src/modules/auth/README.md](./apps/backend/src/modules/auth/README.md) |
+| Base CRUD | [apps/backend/src/commons/base/README.md](./apps/backend/src/commons/base/README.md) |
+| Mailer Package | [packages/mailer/README.md](./packages/mailer/README.md) |
+| SMS Package | [packages/sms/README.md](./packages/sms/README.md) |
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+- [NestJS](https://nestjs.com/) - Node.js framework
+- [Sequelize](https://sequelize.org/) - ORM
+- [PostgreSQL](https://www.postgresql.org/) - Database
+- [Swagger](https://swagger.io/) - API documentation
+- [Nodemailer](https://nodemailer.com/) - Email sending
+- [Twilio](https://www.twilio.com/) - SMS sending
+
+### Frontend
+- [Next.js](https://nextjs.org/) - React framework
+- [SCSS](https://sass-lang.com/) - Styling
+
+### Tooling
+- [Nx](https://nx.dev/) - Monorepo management
+- [Jest](https://jestjs.io/) - Testing
+- [Playwright](https://playwright.dev/) - E2E testing
+- [ESLint](https://eslint.org/) - Linting
+
+---
+
+## 📝 Environment Variables
+
+### Backend
+
+```env
+# Application
+ENV=dev
+APP_PORT=3001
+FRONTEND_DOMAIN=http://localhost:3000
+
+# Database
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_NAME=boilerplate_db
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=your_password
+
+# JWT
+JWT_SECRET=your_super_secret_key
+
+# Email
+MAIL_PREVIEW=true
+
+# SMS
+TWILIO_PREVIEW_MODE=true
+```
+
+See [env-example.txt](./apps/backend/env-example.txt) for full configuration.
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+---
+
+## 📄 License
+
+MIT
+
+---
+
+## 🔗 Useful Links
+
+- [Nx Documentation](https://nx.dev/)
+- [NestJS Documentation](https://docs.nestjs.com/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Sequelize Documentation](https://sequelize.org/docs/v6/)

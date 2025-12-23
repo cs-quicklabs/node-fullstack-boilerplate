@@ -14,6 +14,12 @@
     },
     {
       "path": "./apps/frontend"
+    },
+    {
+      "path": "./packages/mailer"
+    },
+    {
+      "path": "./packages/sms"
     }
   ]
 }

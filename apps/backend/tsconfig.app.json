@@ -3,17 +3,20 @@
   "compilerOptions": {
     "outDir": "dist",
     "types": ["node"],
-    "rootDir": "src",
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "target": "es2021",
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@boilerplate/mailer": ["../../packages/mailer/src/index.ts"],
+      "@boilerplate/mailer/*": ["../../packages/mailer/src/*"],
+      "@boilerplate/sms": ["../../packages/sms/src/index.ts"],
+      "@boilerplate/sms/*": ["../../packages/sms/src/*"]
     }
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "../../packages/*/src/**/*.ts"],
   "exclude": [
     "out-tsc",
     "dist",
@@ -24,5 +27,13 @@
     "eslint.config.js",
     "eslint.config.cjs",
     "eslint.config.mjs"
+  ],
+  "references": [
+    {
+      "path": "../../packages/sms/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/mailer/tsconfig.lib.json"
+    }
   ]
 }

@@ -1,0 +1,30 @@
+{
+  "name": "@boilerplate/sms",
+  "version": "1.0.0",
+  "description": "SMS service package with Twilio and dev preview support",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "nx": {
+    "name": "sms"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/config": "^4.0.2",
+    "twilio": "^5.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/config": "^4.0.2"
+  }
+}
+
