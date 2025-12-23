@@ -1,4 +1,3 @@
-import { instanceToPlain } from 'class-transformer';
 import { Column, CreatedAt, DataType, Model, UpdatedAt } from 'sequelize-typescript';
 import { Sequelize } from 'sequelize';
 
@@ -31,6 +30,8 @@ export abstract class BaseEntity extends Model<Record<string, unknown>> {
   declare updatedAt: Date;
 
   override toJSON() {
-    return instanceToPlain(this);
+    // Use Sequelize's native get() with plain option instead of class-transformer
+    // This avoids issues with nested Model classes
+    return this.get({ plain: true });
   }
 }

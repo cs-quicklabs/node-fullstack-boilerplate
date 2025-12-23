@@ -1,19 +1,15 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app/app.controller';
-import { AppService } from './app/app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import appConfig from './config/app.config';
 import databaseConfig from './database/config/database.config';
-import authConfig from './config/auth.config';
-import mailerConfig from './config/mailer.config';
-import smsConfig from './config/sms.config';
+import { authConfig, mailerConfig, smsConfig, appConfig } from './config';
+import { AllConfigType } from './config/config.type';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { SequelizeConfigService } from './database/sequelize-config.service';
 import { MailerModule } from '@boilerplate/mailer';
 import { SmsModule } from '@boilerplate/sms';
-import { AllConfigType } from './config/config.type';
-import { EmailService } from './commons/services';
+import { EmailService } from '@src/commons/services';
 
 // Modules
 import { AuthModule, JwtAuthGuard } from './modules/auth';
@@ -84,7 +80,6 @@ import { SessionEntity, UserEntity } from './entities';
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     EmailService,
     // Global JWT Auth Guard - protects all routes by default
     {

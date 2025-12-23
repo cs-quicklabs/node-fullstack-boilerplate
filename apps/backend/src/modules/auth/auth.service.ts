@@ -11,7 +11,6 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
-import { Op } from 'sequelize';
 import { AllConfigType } from '@src/config/config.type';
 import {
   UserEntity,
@@ -19,7 +18,6 @@ import {
   OrganizationEntity,
   SessionEntity,
   PasswordResetEntity,
-  EmailVerificationEntity,
 } from '@src/entities';
 import { EmailService } from '@src/commons/services';
 import {
@@ -29,7 +27,7 @@ import {
   ResetPasswordDto,
   ChangePasswordDto,
 } from './dtos';
-import { JwtPayload, JwtTokens, CurrentUser } from './interfaces';
+import { JwtPayload, JwtTokens } from './interfaces';
 
 @Injectable()
 export class AuthService {
@@ -47,8 +45,6 @@ export class AuthService {
     private sessionModel: typeof SessionEntity,
     @InjectModel(PasswordResetEntity)
     private passwordResetModel: typeof PasswordResetEntity,
-    @InjectModel(EmailVerificationEntity)
-    private emailVerificationModel: typeof EmailVerificationEntity,
     private emailService: EmailService,
   ) {}
 
@@ -97,31 +93,9 @@ export class AuthService {
       user_type_id: userTypeId,
     });
 
-    // Create email verification token
-    const verificationToken = crypto.randomBytes(32).toString('hex');
-    const verificationCode = this.generateVerificationCode();
-    const emailVerificationExpiresIn = this.configService.getOrThrow(
-      'auth.emailVerificationExpiresIn',
-      { infer: true },
-    );
-
-    await this.emailVerificationModel.create({
-      user_id: user.id,
-      token: verificationToken,
-      code: verificationCode,
-      expires_at: new Date(Date.now() + emailVerificationExpiresIn * 1000),
-    });
-
-    // Send verification email
-    const frontendDomain = this.configService.getOrThrow('app.frontendDomain', {
-      infer: true,
-    });
-    const verificationLink = `${frontendDomain}/verify-email?token=${verificationToken}`;
-
-    await this.emailService.sendVerificationEmail(user.email, {
+    // Send welcome email
+    await this.emailService.sendWelcomeEmail(user.email, {
       name: user.first_name,
-      verificationLink,
-      code: verificationCode,
     });
 
     // Generate tokens and create session
@@ -260,6 +234,8 @@ export class AuthService {
       where: { email: dto.email.toLowerCase(), deleted_at: null },
     });
 
+    console.log(user);
+
     // Always return success to prevent email enumeration
     if (!user) {
       return { success: true, message: 'If the email exists, a reset link has been sent' };
@@ -361,99 +337,6 @@ export class AuthService {
     await user.update({ password: hashedPassword });
 
     return { success: true, message: 'Password changed successfully' };
-  }
-
-  async verifyEmail(token: string) {
-    const verification = await this.emailVerificationModel.findOne({
-      where: { token, is_verified: false },
-    });
-
-    if (!verification) {
-      throw new BadRequestException('Invalid verification token');
-    }
-
-    if (verification.isExpired) {
-      throw new BadRequestException('Verification token has expired');
-    }
-
-    // Mark as verified
-    await verification.update({ is_verified: true, verified_at: new Date() });
-
-    return { success: true, message: 'Email verified successfully' };
-  }
-
-  async verifyEmailByCode(userId: number, code: string) {
-    const verification = await this.emailVerificationModel.findOne({
-      where: {
-        user_id: userId,
-        code,
-        is_verified: false,
-      },
-    });
-
-    if (!verification) {
-      throw new BadRequestException('Invalid verification code');
-    }
-
-    if (verification.isExpired) {
-      throw new BadRequestException('Verification code has expired');
-    }
-
-    // Mark as verified
-    await verification.update({ is_verified: true, verified_at: new Date() });
-
-    return { success: true, message: 'Email verified successfully' };
-  }
-
-  async resendVerificationEmail(userId: number) {
-    const user = await this.userModel.findByPk(userId);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    // Check if already verified
-    const existingVerification = await this.emailVerificationModel.findOne({
-      where: { user_id: userId, is_verified: true },
-    });
-
-    if (existingVerification) {
-      throw new BadRequestException('Email is already verified');
-    }
-
-    // Invalidate existing tokens
-    await this.emailVerificationModel.update(
-      { is_verified: true },
-      { where: { user_id: userId, is_verified: false } },
-    );
-
-    // Create new verification
-    const verificationToken = crypto.randomBytes(32).toString('hex');
-    const verificationCode = this.generateVerificationCode();
-    const emailVerificationExpiresIn = this.configService.getOrThrow(
-      'auth.emailVerificationExpiresIn',
-      { infer: true },
-    );
-
-    await this.emailVerificationModel.create({
-      user_id: userId,
-      token: verificationToken,
-      code: verificationCode,
-      expires_at: new Date(Date.now() + emailVerificationExpiresIn * 1000),
-    });
-
-    // Send verification email
-    const frontendDomain = this.configService.getOrThrow('app.frontendDomain', {
-      infer: true,
-    });
-    const verificationLink = `${frontendDomain}/verify-email?token=${verificationToken}`;
-
-    await this.emailService.sendVerificationEmail(user.email, {
-      name: user.first_name,
-      verificationLink,
-      code: verificationCode,
-    });
-
-    return { success: true, message: 'Verification email sent' };
   }
 
   async getActiveSessions(userId: number) {
@@ -564,10 +447,6 @@ export class AuthService {
       accessTokenExpiresAt: new Date(Date.now() + accessTokenExpiresIn * 1000),
       refreshTokenExpiresAt: new Date(Date.now() + refreshTokenExpiresIn * 1000),
     };
-  }
-
-  private generateVerificationCode(): string {
-    return Math.floor(100000 + Math.random() * 900000).toString();
   }
 
   private parseDeviceType(userAgent?: string): string | null {

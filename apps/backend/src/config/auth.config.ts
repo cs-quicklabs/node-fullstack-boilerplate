@@ -13,7 +13,6 @@ export interface AuthConfig {
   jwtRefreshTokenExpiresIn: number;
   bcryptSaltRounds: number;
   passwordResetExpiresIn: number;
-  emailVerificationExpiresIn: number;
 }
 
 class EnvironmentVariablesValidator {
@@ -36,10 +35,6 @@ class EnvironmentVariablesValidator {
   @IsNumber()
   @IsOptional()
   PASSWORD_RESET_EXPIRES_IN: number;
-
-  @IsNumber()
-  @IsOptional()
-  EMAIL_VERIFICATION_EXPIRES_IN: number;
 }
 
 export default registerAs<AuthConfig>('auth', () => {
@@ -62,10 +57,5 @@ export default registerAs<AuthConfig>('auth', () => {
     passwordResetExpiresIn: process.env.PASSWORD_RESET_EXPIRES_IN
       ? parseInt(process.env.PASSWORD_RESET_EXPIRES_IN, 10)
       : 3600,
-    // Email verification expires in 24 hours (in seconds)
-    emailVerificationExpiresIn: process.env.EMAIL_VERIFICATION_EXPIRES_IN
-      ? parseInt(process.env.EMAIL_VERIFICATION_EXPIRES_IN, 10)
-      : 86400,
   };
 });
-

@@ -24,22 +24,9 @@ This is a multi-tenant application. Users belong to organizations and can only a
 - Refresh tokens expire after 7 days
 - Use the refresh token endpoint to get new access tokens
 - Sessions are stored in the database and can be revoked
-
-### Rate Limiting
-Please be mindful of API usage. Rate limiting may be applied in production.
     `)
     .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'Authorization',
-        description: 'Enter your JWT access token',
-        in: 'header',
-      },
-      'access-token',
-    )
+    .addBearerAuth()
     .addTag('Authentication', 'User authentication and session management')
     .addTag('Users', 'User management operations')
     .addTag('Organizations', 'Organization management (multi-tenant)')
@@ -47,9 +34,6 @@ Please be mindful of API usage. Rate limiting may be applied in production.
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  
-  // Add security requirement globally
-  document.security = [{ 'access-token': [] }];
   
   SwaggerModule.setup(`${globalPrefix}/docs`, app, document, {
     swaggerOptions: {

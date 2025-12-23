@@ -7,4 +7,3 @@ export { default as mailerConfig } from './mailer.config';
 export * from './mailer.config';
 export { default as smsConfig } from './sms.config';
 export * from './sms.config';
-

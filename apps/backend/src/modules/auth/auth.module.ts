@@ -10,7 +10,6 @@ import {
   OrganizationEntity,
   SessionEntity,
   PasswordResetEntity,
-  EmailVerificationEntity,
 } from '@src/entities';
 
 @Module({
@@ -21,7 +20,6 @@ import {
       OrganizationEntity,
       SessionEntity,
       PasswordResetEntity,
-      EmailVerificationEntity,
     ]),
   ],
   controllers: [AuthController],

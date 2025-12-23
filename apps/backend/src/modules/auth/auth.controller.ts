@@ -24,8 +24,6 @@ import {
   RefreshTokenDto,
   ForgotPasswordDto,
   ResetPasswordDto,
-  VerifyEmailDto,
-  VerifyEmailByCodeDto,
   ChangePasswordDto,
 } from './dtos';
 import { Public, CurrentUser } from './decorators';
@@ -140,42 +138,6 @@ export class AuthController {
     return new SuccessResponse(result.message, result);
   }
 
-  @Public()
-  @Post('verify-email')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Verify email with token' })
-  @ApiResponse({ status: 200, description: 'Email verified successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid or expired token' })
-  async verifyEmail(@Body() dto: VerifyEmailDto) {
-    const result = await this.authService.verifyEmail(dto.token);
-    return new SuccessResponse(result.message, result);
-  }
-
-  @Post('verify-email/code')
-  @HttpCode(HttpStatus.OK)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Verify email with code' })
-  @ApiResponse({ status: 200, description: 'Email verified successfully' })
-  @ApiResponse({ status: 400, description: 'Invalid or expired code' })
-  async verifyEmailByCode(
-    @CurrentUser() user: CurrentUserType,
-    @Body() dto: VerifyEmailByCodeDto,
-  ) {
-    const result = await this.authService.verifyEmailByCode(user.id, dto.code);
-    return new SuccessResponse(result.message, result);
-  }
-
-  @Post('resend-verification')
-  @HttpCode(HttpStatus.OK)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Resend verification email' })
-  @ApiResponse({ status: 200, description: 'Verification email sent' })
-  @ApiResponse({ status: 400, description: 'Email already verified' })
-  async resendVerification(@CurrentUser() user: CurrentUserType) {
-    const result = await this.authService.resendVerificationEmail(user.id);
-    return new SuccessResponse(result.message, result);
-  }
-
   @Get('sessions')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all active sessions' })
@@ -206,4 +168,3 @@ export class AuthController {
     return new SuccessResponse('User information retrieved', user);
   }
 }
-

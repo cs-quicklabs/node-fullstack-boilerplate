@@ -42,7 +42,7 @@ export class EmailService {
    */
   async sendWelcomeEmail(
     to: string,
-    data: { name: string; verificationLink?: string },
+    data: { name: string },
   ): Promise<MailResponse> {
     const html = this.renderTemplate('welcome', data);
     return this.mailerService.sendMail({
@@ -63,21 +63,6 @@ export class EmailService {
     return this.mailerService.sendMail({
       to,
       subject: 'Password Reset Request',
-      html,
-    });
-  }
-
-  /**
-   * Send an email verification email
-   */
-  async sendVerificationEmail(
-    to: string,
-    data: { name: string; verificationLink: string; code?: string },
-  ): Promise<MailResponse> {
-    const html = this.renderTemplate('email-verification', data);
-    return this.mailerService.sendMail({
-      to,
-      subject: 'Verify Your Email Address',
       html,
     });
   }
@@ -129,4 +114,3 @@ export class EmailService {
     });
   }
 }
-
